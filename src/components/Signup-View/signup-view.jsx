@@ -11,6 +11,8 @@ export const SignupView = () => {
     
 
     const handleSubmit = (event) => {
+        event.preventDefault();
+
         const data = {
             Username: username,
             Password: password,
@@ -82,7 +84,7 @@ export const SignupView = () => {
                     onChange={(e)=> setCity(e.target.value)}
                     />
                 </label>
-            <button>Submit</button>
+            <button type="submit">Submit</button>
         </form>
     )
 }

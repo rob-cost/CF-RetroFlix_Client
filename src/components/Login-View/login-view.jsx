@@ -3,7 +3,7 @@ import { useState } from 'react';
 
 
 
-export const LoginView = (onLoggedIn) => {
+export const LoginView = ({onLoggedIn}) => {
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -12,8 +12,8 @@ export const LoginView = (onLoggedIn) => {
         event.preventDefault();
 
         const data = {
-            access: username,
-            secret: password
+            Username: username,
+            Password: password
         }
         fetch('https://my-vintage-flix-06cde8de3bcb.herokuapp.com/login', {
             method: 'POST',
@@ -25,8 +25,10 @@ export const LoginView = (onLoggedIn) => {
             .then((response) => response.json())
             .then((data) => {
                 console.log("Login response: ", data);
-                if(data.user) {
-                    onLoggedIn(data.user, data.token);
+                if(data.User) {
+                    localStorage.setItem("user", JSON.stringify(data.User));
+                    localStorage.setItem("token", data.Token);
+                    onLoggedIn(data.User, data.Token);
                 } else {
                     alert ('User does not exist')
                 }

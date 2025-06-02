@@ -8,8 +8,10 @@ export const MainView = () => {
   const [movies, setMovies] = useState([]);
   const [selectMovie, setSelectMovie] = useState(null);
   const [similarMovies, setSimilarMovies] = useState([]);
-  const [user, setUser] = useState(null);
-  const [token, setToken] = useState(null);
+  const storedUser = JSON.parse(localStorage.getItem("user"));
+  const storedToken = localStorage.getItem("token");
+  const [user, setUser] = useState(storedUser? storedUser:null);
+  const [token, setToken] = useState(storedToken? storedToken:null);
 
   // Fetching list of movies from the API
   useEffect(() => {
@@ -21,10 +23,8 @@ export const MainView = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
-      })
-      .then((movie) => {
-        const movieFromApi = movie.map((movie) => {
+        console.log('Movies from API ' + data);
+        const movieFromApi = data.map((movie) => {
           return {
             id: movie.id,
             Title: movie.Title,
@@ -36,7 +36,7 @@ export const MainView = () => {
             Rating: movie.Rating,
             Image: movie.ImagePath
           };
-        });
+      });
         setMovies(movieFromApi);
       });
 
@@ -109,6 +109,13 @@ export const MainView = () => {
               }}
             />
           ))}
+          <button onClick={()=> {
+            setUser(null);
+            setToken(null);
+            localStorage.clear();
+          }}>
+            Logout
+          </button>
         </div>
       </>
     );
