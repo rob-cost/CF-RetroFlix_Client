@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import { MovieCard } from "../Movie-Card/movie-card";
 import { MovieView } from "../Movie-View/movie-view";
+import { LoginView } from "../Login-View/login-view";
 
 export const MainView = () => {
   const [movies, setMovies] = useState([]);
   const [selectMovie, setSelectMovie] = useState(null);
   const [similarMovies, setSimilarMovies] = useState([]);
+  const [user, setUser] = useState(null);
 
   // Fetching list of movies from the API
   useEffect(() => {
@@ -41,8 +43,12 @@ export const MainView = () => {
     };
   }, [selectMovie, movies]);
 
+  // Login form
+  if (!user) {
+    return <LoginView />;
+  }
 
-  
+  // Renders selected Movie
   if (selectMovie) {
     return (
       <>
@@ -68,6 +74,7 @@ export const MainView = () => {
     );
   }
 
+  // Renders list of movies in case is not empty
   if (movies.length === 0) {
     return <div>Movies list is empty</div>;
   } else {
