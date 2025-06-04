@@ -3,6 +3,8 @@ import { MovieCard } from "../Movie-Card/movie-card";
 import { MovieView } from "../Movie-View/movie-view";
 import { LoginView } from "../Login-View/login-view";
 import { SignupView } from "../Signup-View/signup-view";
+import { Button, Col, Row } from "react-bootstrap";
+import { BeatLoader} from "react-spinners";
 
 export const MainView = () => {
   const [movies, setMovies] = useState([]);
@@ -10,8 +12,9 @@ export const MainView = () => {
   const [similarMovies, setSimilarMovies] = useState([]);
   const storedUser = JSON.parse(localStorage.getItem("user"));
   const storedToken = localStorage.getItem("token");
-  const [user, setUser] = useState(storedUser? storedUser:null);
-  const [token, setToken] = useState(storedToken? storedToken:null);
+  const [user, setUser] = useState(storedUser ? storedUser : null);
+  const [token, setToken] = useState(storedToken ? storedToken : null);
+  const [loading, setLoading] = useState(false);
 
   // Fetching list of movies from the API
   useEffect(() => {
@@ -36,8 +39,12 @@ export const MainView = () => {
             Rating: movie.Rating,
             Image: movie.ImagePath
           };
-      });
-        setMovies(movieFromApi);
+        });
+        setTimeout(() => {
+          setMovies(movieFromApi);
+          setLoading(true);
+        }, 1000)
+
       });
 
   }, [token])
@@ -53,72 +60,86 @@ export const MainView = () => {
     };
   }, [selectMovie, movies]);
 
+
+
+
   // Login form
-  if (!user) {
-    return (
-      <>
-        <LoginView onLoggedIn={(user, token) => {
-          setUser(user);
-          setToken(token);
-        }} />
-        or
-        <SignupView />
-      </>
-    );
-  }
+  return (
+    <Row className="justify-content-md-center">
+      {!user ? (
+        <>
+        <Col md={5}>
+          <LoginView onLoggedIn={(user, token) => {
+            setUser(user);
+            setToken(token);
+          }} />
+          or
+          <SignupView />
+          </Col>
+        </>
+      )
 
-  // Renders selected Movie
-  if (selectMovie) {
-    return (
-      <>
-        <MovieView
-          movie={selectMovie}
-          onBackClick={() => {
-            setSelectMovie(null);
-          }}
-        />
-        <hr />
-        <h2>Similar Movies</h2>
-        <ul>
-          {similarMovies.map((movie) => (
-            <li key={movie.id}
-              onClick={() => {
-                setSelectMovie(movie)
-              }}
-            >
-              {movie.Title}
-            </li>))}
-        </ul>
-      </>
-    );
-  }
-
-  // Renders list of movies in case is not empty
-  if (movies.length === 0) {
-    return <div>Movies list is empty</div>;
-  } else {
-    return (
-      <>
-        <div>
-          {movies.map((movie) => (
-            <MovieCard
-              key={movie.id}
-              movie={movie}
-              onMovieClick={(newSelectMovie) => {
-                setSelectMovie(newSelectMovie);
+        // Renders selected Movie
+        : selectMovie ? (
+          <>
+            <MovieView
+              movie={selectMovie}
+              onBackClick={() => {
+                setSelectMovie(null);
               }}
             />
-          ))}
-          <button onClick={()=> {
-            setUser(null);
-            setToken(null);
-            localStorage.clear();
-          }}>
-            Logout
-          </button>
-        </div>
-      </>
-    );
-  }
-};
+            <hr />
+            <h2>Similar Movies</h2>
+            <ul>
+              {similarMovies.map((movie) => (
+                <li key={movie.id}
+                  onClick={() => {
+                    setSelectMovie(movie)
+                  }}
+                >
+                  {movie.Title}
+                </li>))}
+            </ul>
+          </>
+        )
+
+          : loading === false ? (
+            <BeatLoader />
+          )
+
+            // Renders list of movies in case is not empty
+            : movies.length === 0 ? (
+              <div>Movies list is empty</div>
+            ) : (
+              <>
+                  {movies.map((movie) => (
+                    <Col className="mb-3" md={3} style={{border: '1px solid blue'}}>
+                    <MovieCard
+                      key={movie.id}
+                      movie={movie}
+                      onMovieClick={(newSelectMovie) => {
+                        setSelectMovie(newSelectMovie);
+                      }}
+                    />
+                    </Col>
+                  ))}
+                  <Row className="justify-content-left">
+                    <Col md={2}>
+                  <Button
+                    className="btn btn-danger"
+                    onClick={() => {
+                      setUser(null);
+                      setToken(null);
+                      localStorage.clear();
+                    }}>
+                    Logout
+                  </Button>
+                  </Col>
+                  </Row>
+              </>
+            )
+      }
+    </Row>
+  );
+}
 

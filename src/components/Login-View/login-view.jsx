@@ -1,9 +1,11 @@
 import React from 'react'
 import { useState } from 'react';
+import { Form, Button, FormGroup } from 'react-bootstrap';
 
 
 
-export const LoginView = ({onLoggedIn}) => {
+
+export const LoginView = ({ onLoggedIn }) => {
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -25,40 +27,45 @@ export const LoginView = ({onLoggedIn}) => {
             .then((response) => response.json())
             .then((data) => {
                 console.log("Login response: ", data);
-                if(data.User) {
+                if (data.User) {
                     localStorage.setItem("user", JSON.stringify(data.User));
                     localStorage.setItem("token", data.Token);
                     onLoggedIn(data.User, data.Token);
                 } else {
-                    alert ('User does not exist')
+                    alert('User does not exist')
                 }
             })
-            .catch ((e) => {
+            .catch((e) => {
                 alert('Something is wrong' + e);
             });
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <label>
-                Username:
-                <input
+        <Form onSubmit={handleSubmit}>
+            <Form.Group controlId='formUsername'>
+                <Form.Label>Username:</Form.Label>
+                <Form.Control
                     type='text'
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
+                    minLength='3'
                     required
                 />
-            </label>
-            <label>
-                Password:
-                <input
+            </Form.Group>
+            <Form.Group controlId='formPassword'>
+                <Form.Label>Password:</Form.Label>
+                <Form.Control
                     type='password'
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
                 />
-            </label>
-            <button type='submit'>Login</button>
-        </form>
+            </Form.Group>
+
+            <Button
+                type='submit'
+                variant='outline-dark'>
+                    Login</Button>
+        </Form>
     )
 }
