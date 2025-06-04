@@ -1,6 +1,7 @@
 import React from "react";
 import { useState } from "react";
-import {Form, Button} from "react-bootstrap"
+import { Form, Button, Row, Col, Container, Card } from "react-bootstrap"
+import CardHeader from "react-bootstrap/esm/CardHeader";
 
 export const SignupView = () => {
 
@@ -39,60 +40,76 @@ export const SignupView = () => {
             })
     };
     return (
-        <Form onSubmit={handleSubmit}>
-            <Form.Group controlId='formUsername'>
-                <Form.Label>Username</Form.Label>
-                <Form.Control
-                    type='text'
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    minLength='3'
-                    required
-                />
-            </Form.Group>
+        <Container>
+            <Row className="justify-content-md-center">
+                <Col md={5}>
+                    <Card className="border-0">
+                        <Card.Body>
+                            <Card.Title className='mb-2'>Create an account</Card.Title>
+                            <Form onSubmit={handleSubmit}>
+                                <Form.Group className='mb-2' controlId='formUsername'>
+                                    <Form.Control
+                                        type='text'
+                                        value={username}
+                                        onChange={(e) => setUsername(e.target.value)}
+                                        minLength='3'
+                                        placeholder='Username'
+                                        required
+                                    />
+                                </Form.Group>
 
-            <Form.Group controlId='formPassword'>
-                <Form.Label>Password</Form.Label>
-                <Form.Control
-                    type='password'
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                />
-            </Form.Group>
+                                <Form.Group className='mb-2' controlId='formPassword'>
 
-            <Form.Group controlId='formEmail'>
-                <Form.Label>Email</Form.Label>
-                <Form.Control
-                    type='email'
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                />
-            </Form.Group>
+                                    <Form.Control
+                                        type='password'
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)}
+                                        placeholder='Password'
+                                        required
+                                    />
+                                </Form.Group>
 
-            <Form.Group controlId='formBirthday'>
-                <Form.Label>Birthday</Form.Label>
-                <Form.Control
-                    type='date'
-                    value={birthday}
-                    onChange={(e) => setBirthday(e.target.value)}
-                    required
-                />
-            </Form.Group>
+                                <Form.Group className='mb-2' controlId='formEmail'>
 
-            <Form.Group controlId='formCity'>
-                <Form.Label>City</Form.Label>
-                <Form.Control
-                    type="text"
-                    value={city}
-                    onChange={(e) => setCity(e.target.value)}
-                />
-            </Form.Group>
-            <Button
-                type="submit"
-                variant='outline-dark'
-            >Submit</Button>
-        </Form>
+                                    <Form.Control
+                                        type='email'
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                        placeholder='Email address'
+                                        required
+                                    />
+                                </Form.Group>
+
+                                <Form.Group className='mb-2' controlId='formBirthday'>
+
+                                    <Form.Control
+                                        type='date'
+                                        value={birthday}
+                                        onChange={(e) => setBirthday(e.target.value)}
+                                        placeholder="Birthday"
+                                        required
+                                    />
+                                </Form.Group>
+
+                                <Form.Group className='mb-2' controlId='formCity'>
+
+                                    <Form.Control
+                                        type="text"
+                                        value={city}
+                                        onChange={(e) => setCity(e.target.value)}
+                                        placeholder="City"
+                                    />
+                                </Form.Group>
+                                <Button
+                                    type="submit"
+                                    variant='primary'
+
+                                >Submit</Button>
+                            </Form>
+                        </Card.Body>
+                    </Card>
+                </Col>
+            </Row>
+        </Container>
     )
 }

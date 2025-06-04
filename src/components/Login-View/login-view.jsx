@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState } from 'react';
-import { Form, Button, FormGroup } from 'react-bootstrap';
+import { Form, Button, FormGroup, Container, Row, Col, Card } from 'react-bootstrap';
 
 
 
@@ -41,31 +41,46 @@ export const LoginView = ({ onLoggedIn }) => {
     };
 
     return (
-        <Form onSubmit={handleSubmit}>
-            <Form.Group controlId='formUsername'>
-                <Form.Label>Username:</Form.Label>
-                <Form.Control
-                    type='text'
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    minLength='3'
-                    required
-                />
-            </Form.Group>
-            <Form.Group controlId='formPassword'>
-                <Form.Label>Password:</Form.Label>
-                <Form.Control
-                    type='password'
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                />
-            </Form.Group>
+        <Container>
+            <Row className="justify-content-md-center">
+                <Col md={5}>
+                    <Card className='border-0'>
 
-            <Button
-                type='submit'
-                variant='outline-dark'>
-                    Login</Button>
-        </Form>
+                        <Card.Body>
+                            <Card.Title className='mb-2'>Login</Card.Title>
+                            <Form onSubmit={handleSubmit}>
+                                <Form.Group className='mb-2' controlId='formUsername'>
+
+                                    <Form.Control
+                                        type='text'
+                                        value={username}
+                                        onChange={(e) => setUsername(e.target.value)}
+                                        minLength='3'
+                                        placeholder='Username'
+                                        required
+                                    />
+                                </Form.Group>
+                                <Form.Group className='mb-2' controlId='formPassword'>
+
+                                    <Form.Control
+                                        type='password'
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)}
+                                        placeholder='Password'
+                                        required
+                                    />
+                                </Form.Group>
+                                <Button
+                                    type='submit'
+                                    variant='primary'
+
+                                >
+                                    Login</Button>
+                            </Form>
+                        </Card.Body>
+                    </Card>
+                </Col>
+            </Row>
+        </Container>
     )
 }

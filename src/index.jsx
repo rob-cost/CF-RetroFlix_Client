@@ -8,7 +8,7 @@ import { Container } from 'react-bootstrap';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <Container style={{border: "1px solid red"}}>
+    <Container>
     <MainView />
     </Container>
   </StrictMode>,

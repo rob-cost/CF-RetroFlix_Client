@@ -3,8 +3,9 @@ import { MovieCard } from "../Movie-Card/movie-card";
 import { MovieView } from "../Movie-View/movie-view";
 import { LoginView } from "../Login-View/login-view";
 import { SignupView } from "../Signup-View/signup-view";
-import { Button, Col, Row } from "react-bootstrap";
+import { Button, Col, Row, Container } from "react-bootstrap";
 import { BeatLoader} from "react-spinners";
+import { SimilarMovies } from "../Similar-Movies/similar-movies";
 
 export const MainView = () => {
   const [movies, setMovies] = useState([]);
@@ -68,14 +69,13 @@ export const MainView = () => {
     <Row className="justify-content-md-center">
       {!user ? (
         <>
-        <Col md={5}>
           <LoginView onLoggedIn={(user, token) => {
             setUser(user);
             setToken(token);
           }} />
           or
           <SignupView />
-          </Col>
+
         </>
       )
 
@@ -89,7 +89,13 @@ export const MainView = () => {
               }}
             />
             <hr />
-            <h2>Similar Movies</h2>
+            <SimilarMovies
+            movies={similarMovies}
+            onMovieClick={(movie) => setSelectMovie(movie)}
+           
+            
+            />
+            {/* <h2>Similar Movies</h2>
             <ul>
               {similarMovies.map((movie) => (
                 <li key={movie.id}
@@ -99,12 +105,14 @@ export const MainView = () => {
                 >
                   {movie.Title}
                 </li>))}
-            </ul>
+            </ul> */}
           </>
         )
 
           : loading === false ? (
+            <Container className="d-flex justify-content-center align-items-center vh-100">
             <BeatLoader />
+            </Container>
           )
 
             // Renders list of movies in case is not empty
@@ -113,7 +121,7 @@ export const MainView = () => {
             ) : (
               <>
                   {movies.map((movie) => (
-                    <Col className="mb-3" md={3} style={{border: '1px solid blue'}}>
+                    <Col className="mb-3" md={3}>
                     <MovieCard
                       key={movie.id}
                       movie={movie}
