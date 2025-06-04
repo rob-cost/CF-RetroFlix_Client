@@ -4,7 +4,7 @@ import { MovieView } from "../Movie-View/movie-view";
 import { LoginView } from "../Login-View/login-view";
 import { SignupView } from "../Signup-View/signup-view";
 import { Button, Col, Row, Container } from "react-bootstrap";
-import { BeatLoader} from "react-spinners";
+import { BeatLoader } from "react-spinners";
 import { SimilarMovies } from "../Similar-Movies/similar-movies";
 
 export const MainView = () => {
@@ -66,7 +66,7 @@ export const MainView = () => {
 
   // Login form
   return (
-    <Row className="justify-content-md-center">
+    <Row className="justify-content-md-center mt-5 mb-5">
       {!user ? (
         <>
           <LoginView onLoggedIn={(user, token) => {
@@ -90,28 +90,16 @@ export const MainView = () => {
             />
             <hr />
             <SimilarMovies
-            movies={similarMovies}
-            onMovieClick={(movie) => setSelectMovie(movie)}
-           
-            
+              movies={similarMovies}
+              onMovieClick={(movie) => setSelectMovie(movie)}
+
             />
-            {/* <h2>Similar Movies</h2>
-            <ul>
-              {similarMovies.map((movie) => (
-                <li key={movie.id}
-                  onClick={() => {
-                    setSelectMovie(movie)
-                  }}
-                >
-                  {movie.Title}
-                </li>))}
-            </ul> */}
           </>
         )
 
           : loading === false ? (
             <Container className="d-flex justify-content-center align-items-center vh-100">
-            <BeatLoader />
+              <BeatLoader />
             </Container>
           )
 
@@ -120,8 +108,8 @@ export const MainView = () => {
               <div>Movies list is empty</div>
             ) : (
               <>
-                  {movies.map((movie) => (
-                    <Col className="mb-3" md={3}>
+                {movies.map((movie) => (
+                  <Col className="mb-3" md={3}>
                     <MovieCard
                       key={movie.id}
                       movie={movie}
@@ -129,21 +117,21 @@ export const MainView = () => {
                         setSelectMovie(newSelectMovie);
                       }}
                     />
-                    </Col>
-                  ))}
-                  <Row className="justify-content-left">
-                    <Col md={2}>
-                  <Button
-                    className="btn btn-danger"
-                    onClick={() => {
-                      setUser(null);
-                      setToken(null);
-                      localStorage.clear();
-                    }}>
-                    Logout
-                  </Button>
                   </Col>
-                  </Row>
+                ))}
+                <Row className="justify-content-left">
+                  <Col md={2}>
+                    <Button
+                      className="btn btn-danger"
+                      onClick={() => {
+                        setUser(null);
+                        setToken(null);
+                        localStorage.clear();
+                      }}>
+                      Logout
+                    </Button>
+                  </Col>
+                </Row>
               </>
             )
       }

@@ -1,0 +1,27 @@
+body {
+  background-color: #1B0034;
+  font-family: 'Roboto', Arial, sans-serif;
+  color: #FFD6A5;
+}
+
+.btn {
+  background-color: #33FFE0;
+  color: #1B0034;
+  font-weight: bold;
+  border: none;
+  box-shadow: 0 0 10px #33FFE0;
+}
+
+.card {
+  background-color: #1B0034;
+  border: 0.5px solid #D883FF;
+  color: #FFD6A5;
+}
+
+.card-title {
+  color: #33FFE0;
+}
+
+.card-text {
+  color: #FFD6A5;
+}

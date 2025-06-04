@@ -5,7 +5,7 @@ export const MovieView = ({ movie, onBackClick }) => {
 
     return (
         <Container>
-            <Row className="mb-5">
+            <Row className="mb-5 mt-5">
                 <Col md={7} className="d-flex flex-column justify-content-between">
                 <div>
                     <h1>{movie.Title}</h1>
@@ -19,7 +19,7 @@ export const MovieView = ({ movie, onBackClick }) => {
                     <p>{movie.Rating}</p>
                     </div>
                     <button
-                        className="align-self-start"
+                        className="btn align-self-start"
                         onClick={onBackClick}
                         variant="primary"
                     >Back</button>
