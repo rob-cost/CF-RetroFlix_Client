@@ -2,14 +2,17 @@ import React from "react";
 import { useState } from "react";
 import { Form, Button, Row, Col, Container, Card } from "react-bootstrap"
 import CardHeader from "react-bootstrap/esm/CardHeader";
+import Modal from 'react-bootstrap/Modal';
+import { Link, useNavigate } from "react-router-dom";
 
-export const SignupView = () => {
-
+export const ModalSignup = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
     const [birthday, setBirthday] = useState('');
     const [city, setCity] = useState('');
+
+    const navigate = useNavigate();
 
 
     const handleSubmit = (event) => {
@@ -33,20 +36,28 @@ export const SignupView = () => {
             .then((response) => {
                 if (response.ok) {
                     alert('Signup successful');
-                    window.location.reload();
+                    /* window.location.reload(); */
+                    navigate('/login');
                 } else {
                     alert('Signup failed')
                 }
             })
     };
+
     return (
-        <Container>
-            <Row className="justify-content-md-center">
-                <Col md={5}>
+        <div
+            className="modal show"
+            style={{ display: 'block', position: 'initial' }}
+        >
+            <Modal.Dialog>
+                <Modal.Header closeButton>
+                    <Modal.Title>Sign Up</Modal.Title>
+                </Modal.Header>
+
+                <Modal.Body>
                     <Card className="border-0">
                         <Card.Body>
-                            <Card.Title className='mb-2'>Create an account</Card.Title>
-                            <Form onSubmit={handleSubmit}>
+                            <Form id="signup-form" onSubmit={handleSubmit}>
                                 <Form.Group className='mb-2' controlId='formUsername'>
                                     <Form.Control
                                         type='text'
@@ -100,16 +111,27 @@ export const SignupView = () => {
                                         placeholder="City"
                                     />
                                 </Form.Group>
-                                <Button
-                                    type="submit"
-                                    variant='primary'
 
-                                >Submit</Button>
                             </Form>
                         </Card.Body>
                     </Card>
-                </Col>
-            </Row>
-        </Container>
-    )
+                </Modal.Body>
+
+                <Modal.Footer>
+                    <div className="me-auto">
+                    <Button
+                        form="signup-form"
+                        type="submit"
+                        variant='primary'
+                    >Submit</Button>
+                    </div>
+                    <Link to ={'/login'}>
+                        <span>
+                            Already have an account
+                    </span>
+                    </Link>
+                </Modal.Footer>
+            </Modal.Dialog>
+        </div>
+    );
 }

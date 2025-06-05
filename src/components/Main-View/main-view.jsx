@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
 import { MovieCard } from "../Movie-Card/movie-card";
 import { MovieView } from "../Movie-View/movie-view";
-import { LoginView } from "../Login-View/login-view";
-import { SignupView } from "../Signup-View/signup-view";
-import { Button, Col, Row, Container } from "react-bootstrap";
-import { BeatLoader } from "react-spinners";
+import { ModalLogin } from "../Login-View/login-view";
+import { ModalSignup } from "../Signup-View/signup-view";
 import { SimilarMovies } from "../Similar-Movies/similar-movies";
+import { Col, Row, Container } from "react-bootstrap";
+import { BeatLoader } from "react-spinners";
+import { NavScroll } from "../Navigation-Bar/navigation-bar";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 
 export const MainView = () => {
   const [movies, setMovies] = useState([]);
-  const [selectMovie, setSelectMovie] = useState(null);
-  const [similarMovies, setSimilarMovies] = useState([]);
   const storedUser = JSON.parse(localStorage.getItem("user"));
   const storedToken = localStorage.getItem("token");
   const [user, setUser] = useState(storedUser ? storedUser : null);
@@ -51,91 +51,107 @@ export const MainView = () => {
   }, [token])
 
 
-  // Creating a list of movies with the same genre of a selected one 
-  useEffect(() => {
-    if (selectMovie) {
-      const relatedMovies = movies.filter((m) => m.Genre.Name === selectMovie.Genre.Name && m.id !== selectMovie.id);
-      setSimilarMovies(relatedMovies);
-    } else {
-      setSimilarMovies([]);
-    };
-  }, [selectMovie, movies]);
-
-
-
-
   // Login form
   return (
-    <Row className="justify-content-md-center mt-5 mb-5">
-      {!user ? (
-        <>
-          <LoginView onLoggedIn={(user, token) => {
-            setUser(user);
-            setToken(token);
-          }} />
-          or
-          <SignupView />
-
-        </>
-      )
-
-        // Renders selected Movie
-        : selectMovie ? (
-          <>
-            <MovieView
-              movie={selectMovie}
-              onBackClick={() => {
-                setSelectMovie(null);
-              }}
+    <BrowserRouter>
+      <NavScroll
+        setUser={setUser}
+        setToken={setToken}
+      />
+      <Container>
+        <Row className="justify-content-md-center mt-5 mb-5">
+          <Routes>
+            <Route
+              path='/login'
+              element={
+                <>
+                  {user ? (
+                    <Navigate to='/' />)
+                    :
+                    <ModalLogin
+                      onLoggedIn={(user, token) => {
+                        setUser(user);
+                        setToken(token);
+                      }} />
+                  }
+                </>
+              }
             />
-            <hr />
-            <SimilarMovies
-              movies={similarMovies}
-              onMovieClick={(movie) => setSelectMovie(movie)}
-
+            <Route
+              path='/signup'
+              element={
+                <>
+                  {user ? (
+                    <Navigate to='/' />
+                  ) : (
+                    <ModalSignup />
+                  )
+                  }
+                </>
+              }
             />
-          </>
-        )
 
-          : loading === false ? (
-            <Container className="d-flex justify-content-center align-items-center vh-100">
-              <BeatLoader />
-            </Container>
-          )
+            <Route
+              path='/'
+              element={
+                <>
+                  {!user ? (
+                    <Navigate to='/login' replace />
+                  ) : !loading ? (
+                    <Container className="d-flex justify-content-center align-items-center vh-100">
+                      <BeatLoader />
+                    </Container>
+                  ) : (<Navigate to='/movies' replace />)
+                  }
+                </>
+              }
+            />
+            <Route
+              path='/movies'
+              element={
+                <>
+                  {!user ? (
+                    <Navigate to='/login' replace />
+                  ) : movies.length === 0 ? (
+                    <Container className="d-flex justify-content-center align-items-center vh-100">
+                      <div>Movies list is empty</div>
+                    </Container>
+                  ) : (
+                    <>
+                      {movies.map((movie) => (
+                        <Col className="mb-3" md={3} key={movie.id}>
+                          <MovieCard movie={movie} />
+                        </Col>
+                      ))}
+                    </>
+                  )
+                  }
+                </>
+              }
+            />
 
-            // Renders list of movies in case is not empty
-            : movies.length === 0 ? (
-              <div>Movies list is empty</div>
-            ) : (
-              <>
-                {movies.map((movie) => (
-                  <Col className="mb-3" md={3}>
-                    <MovieCard
-                      key={movie.id}
-                      movie={movie}
-                      onMovieClick={(newSelectMovie) => {
-                        setSelectMovie(newSelectMovie);
-                      }}
-                    />
-                  </Col>
-                ))}
-                <Row className="justify-content-left">
-                  <Col md={2}>
-                    <Button
-                      className="btn btn-danger"
-                      onClick={() => {
-                        setUser(null);
-                        setToken(null);
-                        localStorage.clear();
-                      }}>
-                      Logout
-                    </Button>
-                  </Col>
-                </Row>
-              </>
-            )
-      }
-    </Row>
+            <Route
+              path='movies/:title'
+              element={
+                <>
+                  {!user ? (
+                    <Navigate to='/login' replace />
+                  ) : (
+                    <>
+                      <MovieView movies={movies} />
+                      <hr />
+                      <SimilarMovies movies={movies} />
+                    </>
+                  )}
+                </>
+              }
+            />
+
+
+          </Routes>
+        </Row>
+      </Container>
+    </BrowserRouter >
   );
 }
 

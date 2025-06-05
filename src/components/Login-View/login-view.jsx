@@ -1,12 +1,12 @@
-import React from 'react'
+import Button from 'react-bootstrap/Button';
+import React from 'react';
+import Modal from 'react-bootstrap/Modal';
 import { useState } from 'react';
-import { Form, Button, FormGroup, Container, Row, Col, Card } from 'react-bootstrap';
+import { Form, Card } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 
-
-
-export const LoginView = ({ onLoggedIn }) => {
-
+export const ModalLogin = ({ onLoggedIn }) => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
@@ -41,14 +41,18 @@ export const LoginView = ({ onLoggedIn }) => {
     };
 
     return (
-        <Container>
-            <Row className="justify-content-md-center">
-                <Col md={5}>
+        <div
+            className="modal show"
+            style={{ display: 'block', position: 'initial' }}
+        >
+            <Modal.Dialog>
+                <Modal.Header closeButton>
+                    <Modal.Title>Login</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
                     <Card className='border-0'>
-
                         <Card.Body>
-                            <Card.Title className='mb-2'>Login</Card.Title>
-                            <Form onSubmit={handleSubmit}>
+                            <Form id='login-form' onSubmit={handleSubmit}>
                                 <Form.Group className='mb-2' controlId='formUsername'>
 
                                     <Form.Control
@@ -70,17 +74,28 @@ export const LoginView = ({ onLoggedIn }) => {
                                         required
                                     />
                                 </Form.Group>
-                                <Button
-                                    type='submit'
-                                    variant='primary'
 
-                                >
-                                    Login</Button>
                             </Form>
                         </Card.Body>
                     </Card>
-                </Col>
-            </Row>
-        </Container>
-    )
+                </Modal.Body>
+                <Modal.Footer>
+                    <div className='me-auto'>
+                    <Button
+                        form='login-form'
+                        type='submit'
+                        variant='primary'
+                    >
+                        Login</Button>
+                        </div>
+                        <Link to ={'/signup'}>
+                        <span>
+                            Don't have an account?
+                    </span>
+                    </Link>
+                </Modal.Footer>
+            </Modal.Dialog>
+        </div>
+    );
 }
+

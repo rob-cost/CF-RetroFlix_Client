@@ -1,7 +1,19 @@
-import { Container, Row, Col } from "react-bootstrap";
+import { Container, Row, Col, Button } from "react-bootstrap";
+import { Link, useParams } from "react-router-dom";
 
-export const MovieView = ({ movie, onBackClick }) => {
-    console.log(movie, onBackClick)
+export const MovieView = ({ movies }) => {
+ 
+    const {title} = useParams();
+    const decodedTitle = decodeURIComponent(title);
+    const movie = movies.find((m)=>m.Title===decodedTitle);
+
+    if (!movie) {
+        return (
+            <Container>
+                <div>Movie not found</div>
+            </Container>
+        )
+    };
 
     return (
         <Container>
@@ -18,11 +30,12 @@ export const MovieView = ({ movie, onBackClick }) => {
                     <p>{movie.Release}</p>
                     <p>{movie.Rating}</p>
                     </div>
-                    <button
+                    <Link to={'/movies'}>
+                    <Button
                         className="btn align-self-start"
-                        onClick={onBackClick}
-                        variant="primary"
-                    >Back</button>
+                    
+                    >Back</Button>
+                    </Link>
                 </Col>
                 <Col md={5}>
                     <div className="position-relative">
