@@ -4,6 +4,7 @@ import { MovieView } from "../Movie-View/movie-view";
 import { ModalLogin } from "../Login-View/login-view";
 import { ModalSignup } from "../Signup-View/signup-view";
 import { SimilarMovies } from "../Similar-Movies/similar-movies";
+import { ProfileView } from "../Profile-View/profile-view";
 import { Col, Row, Container } from "react-bootstrap";
 import { BeatLoader } from "react-spinners";
 import { NavScroll } from "../Navigation-Bar/navigation-bar";
@@ -97,7 +98,7 @@ export const MainView = () => {
                 <>
                   {!user ? (
                     <Navigate to='/login' replace />
-                  ) : !loading ? (
+                  ) : loading ? (
                     <Container className="d-flex justify-content-center align-items-center vh-100">
                       <BeatLoader />
                     </Container>
@@ -145,6 +146,23 @@ export const MainView = () => {
                   )}
                 </>
               }
+            />
+            <Route
+            path='/profile'
+            element={
+              <>
+              {!user ? (
+                <Navigate to='/login' replace/>
+              ) : (
+                <>
+                <ProfileView 
+                token={token}
+                user={storedUser} />
+                </>
+              )
+            }
+              </>
+            }
             />
 
 
