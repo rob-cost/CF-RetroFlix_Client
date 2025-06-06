@@ -1,29 +1,48 @@
 import { useEffect, useState } from "react";
 import { Container, Row, Col, Card, Form, Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import { MovieCard } from "../Movie-Card/movie-card";
 
-export const ProfileView = ({ token }) => {
 
+export const ProfileView = ({ token, movies }) => {
+
+  const [originalUserData, setOriginalUserData] = useState(null);
+  const [favoriteMovies, setFavoriteMovies] = useState([]);
   const [userData, setUserData] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
+
+
+
 
   useEffect(() => {
     if (!token) {
       return;
     }
+
+    /* --- OBTAIN USER INFOS --- */
     const username = JSON.parse(localStorage.getItem('user')).Username;
 
-    fetch(`https://my-vintage-flix-06cde8de3bcb.herokuapp.com/users/${username}`, {
+    fetch(`http://localhost:8080/users/${username}`, {
       method: 'GET',
       headers: { Authorization: `Bearer ${token}` }
     }).then((response) => response.json())
       .then((data) => {
-        console.log(`User data: ${data}`);
-        setUserData(data);
+        console.log(`User data: ${data.FavoriteMovies}`);
+        console.log(movies)
+        data.Password = '';
+        setUserData(data)
+        setOriginalUserData(data);
+        const favMovies = movies.filter((i) => data.FavoriteMovies.includes(i.id))
+        console.log(favMovies)
+        setFavoriteMovies(favMovies)
       })
       .catch((err) => console.error('Error fetching data' + err))
-  }, [token])
+  }, [token, movies])
+
   if (!userData) return <div>Loading data...</div>
 
+
+  /* --- SAVE BUTTON FUNCTION --- */
   const handleSave = (event) => {
     event.preventDefault();
     const data = {
@@ -34,7 +53,7 @@ export const ProfileView = ({ token }) => {
       City: userData.City,
     }
     const username = JSON.parse(localStorage.getItem('user')).Username;
-    fetch(`https://my-vintage-flix-06cde8de3bcb.herokuapp.com/users/${username}`, {
+    fetch(`http://localhost:8080/users/${username}`, {
       method: 'PUT',
       body: JSON.stringify(data),
       headers: {
@@ -48,83 +67,155 @@ export const ProfileView = ({ token }) => {
         setIsEditing(false)
       }
       else {
-        response.json().then((err)=>{
-          console.error('Server' +err);
-          alert('Updated failed:' +err.message)
+        response.json().then((err) => {
+          console.error('Server' + err);
+          alert('Updated failed: ' + err.message)
         })
       }
     })
-      .catch((error) => console.log('Error' + error))
+      .catch((err) => {
+        alert('Error' + err)
+        console.log('Error' + err)
+      })
 
   };
 
+
+  /* --- CANCEL CHANGES BUTTON FUNCTION --- */
+  const handleCancel = (event) => {
+
+    event.preventDefault();
+    setUserData(originalUserData)
+    setIsEditing(false);
+  };
+
+
+
+  /* --- DELETE USER BUTTON FUNCTION --- */
+  const handleDelete = (event) => {
+    event.preventDefault();
+    const username = JSON.parse(localStorage.getItem('user')).Username;
+    fetch(`http://localhost:8080/users/${username}`, {
+      method: 'DELETE',
+      headers: { "Authorization": `Bearer ${token}` }
+    }
+
+    ).then((response) => {
+      if (response.ok) {
+        alert('Profile deleted')
+        localStorage.clear();
+        window.location.href = '/signup'
+
+
+      }
+      else {
+        response.json().then((err) => {
+          alert('Error' + err)
+          console.log(err)
+        })
+      }
+    })
+      .catch((err) => {
+        console.log("Error" + err)
+      })
+  }
+
+
   return (
-    <Container>
-      <Row>
-        <Col>
-          <Card>
-            <Card.Body>
-              <Card.Title>Your Profile</Card.Title>
-              <Form>
-                <Form.Group className="mb-3" controlId="form-username">
-                  <Form.Label>Username</Form.Label>
-                  <Form.Control
-                    type="text"
-                    value={userData.Username}
-                    onChange={(e) => setUserData({ ...userData, Username: e.target.value })}
-                    disabled={!isEditing} />
-                </Form.Group>
+    <>
+      <Container>
+        <Row>
+          <Col>
+            <Card>
+              <Card.Body>
+                <Card.Title>Your Profile</Card.Title>
+                <Form onSubmit={handleSave}>
+                  <Form.Group className="mb-3" controlId="form-username">
+                    <Form.Label>Username</Form.Label>
+                    <Form.Control
+                      type="text"
+                      value={userData.Username}
+                      required
+                      onChange={(e) => setUserData({ ...userData, Username: e.target.value })}
+                      disabled={!isEditing} />
+                  </Form.Group>
 
-                <Form.Group className="mb-3" controlId="form-password">
-                  <Form.Label>Password</Form.Label>
-                  <Form.Control
-                    type="email"
-                    value={userData.Password}
-                    onChange={(e) => setUserData({ ...userData, Password: e.target.value })}
-                    disabled={!isEditing} />
-                </Form.Group>
+                  <Form.Group className="mb-3" controlId="form-password">
+                    <Form.Label>Password</Form.Label>
+                    <Form.Control
+                      type="password"
+                      value={userData.Password}
+                      required
+                      onChange={(e) => setUserData({ ...userData, Password: e.target.value })}
+                      disabled={!isEditing} />
+                  </Form.Group>
 
-                <Form.Group className="mb-3" controlId="form-email">
-                  <Form.Label>Email</Form.Label>
-                  <Form.Control
-                    type="email"
-                    value={userData.Email}
-                    onChange={(e) => setUserData({ ...userData, Email: e.target.value })}
-                    disabled={!isEditing} />
-                </Form.Group>
+                  <Form.Group className="mb-3" controlId="form-email">
+                    <Form.Label>Email</Form.Label>
+                    <Form.Control
+                      type="email"
+                      value={userData.Email}
+                      required
+                      onChange={(e) => setUserData({ ...userData, Email: e.target.value })}
+                      disabled={!isEditing} />
+                  </Form.Group>
 
-                <Form.Group className="mb-3" controlId="form-birthday">
-                  <Form.Label>Birthday</Form.Label>
-                  <Form.Control
-                    type="text"
-                    value={userData.Birthday?.slice(0, 10)}
-                    onChange={(e) => setUserData({ ...userData, Birthday: e.target.value })}
-                    disabled={!isEditing} />
-                </Form.Group>
+                  <Form.Group className="mb-3" controlId="form-birthday">
+                    <Form.Label>Birthday</Form.Label>
+                    <Form.Control
+                      type="date"
+                      value={userData.Birthday?.slice(0, 10)}
+                      onChange={(e) => setUserData({ ...userData, Birthday: e.target.value })}
+                      required
+                      disabled={!isEditing} />
+                  </Form.Group>
 
-                <Form.Group className="mb-3" controlId="form-city">
-                  <Form.Label>City</Form.Label>
-                  <Form.Control
-                    type="text"
-                    value={userData.City}
-                    onChange={(e) => setUserData({ ...userData, City: e.target.value })}
-                    disabled={!isEditing} />
-                </Form.Group>
-              </Form>
-              {!isEditing ? (
-                <Button onClick={() => { setIsEditing(true) }}>Change</Button>
-              ) : (
-                <>
-                  <Button variant='success' onClick={handleSave}>Save</Button>
-                  <Button onClick={() => { setIsEditing(false) }}>Cancel</Button>
-                </>
-              )}
+                  <Form.Group className="mb-3" controlId="form-city">
+                    <Form.Label>City</Form.Label>
+                    <Form.Control
+                      type="text"
+                      value={userData.City}
+                      onChange={(e) => setUserData({ ...userData, City: e.target.value })}
+                      disabled={!isEditing} />
+                  </Form.Group>
 
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
-    </Container>
+                  {!isEditing ? (
+                    <>
+                      <Button onClick={() => { setIsEditing(true) }}>Change</Button>
+                      <Button onClick={handleDelete}>Delete</Button>
+                    </>
+                  ) : (
+                    <>
+                      <Button type="submit" variant='success'>Save</Button>
+                      <Button onClick={handleCancel}>Cancel</Button>
+                    </>
+                  )}
+                </Form>
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
+      </Container>
+
+
+      <Container>
+
+        <Row className="mt-5 mb-5">
+          {favoriteMovies.length === 0 ? (
+            <h3>No Favorite Movies in your list</h3>
+          ) : (
+            <>
+              <h3>Favorite Movies</h3>
+              {favoriteMovies.map((m) => (
+                <Col className="mb-3" md={3} key={m.id}>
+                  <MovieCard movie={m} />
+                </Col>
+              ))}
+            </>
+          )}
+        </Row>
+      </Container>
+    </>
   )
 }
 
