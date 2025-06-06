@@ -26,7 +26,7 @@ export const ModalSignup = () => {
             City: city
         };
 
-        fetch('https://my-vintage-flix-06cde8de3bcb.herokuapp.com/users', {
+        fetch('http://localhost:8080/users', {
             method: 'POST',
             body: JSON.stringify(data),
             headers: {
@@ -36,11 +36,15 @@ export const ModalSignup = () => {
             .then((response) => {
                 if (response.ok) {
                     alert('Signup successful');
-                    /* window.location.reload(); */
                     navigate('/login');
                 } else {
-                    alert('Signup failed')
+                    response.text().then((err)=>{
+                        alert(err)
+                    })
                 }
+            })
+            .catch((err)=> {
+                console.log('Error' + err)
             })
     };
 
