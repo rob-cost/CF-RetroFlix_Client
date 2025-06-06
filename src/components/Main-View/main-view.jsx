@@ -20,10 +20,11 @@ export const MainView = () => {
 
   // Fetching list of movies from the API
   useEffect(() => {
-    if (!token) {
-      return;
-    }
-    fetch('https://my-vintage-flix-06cde8de3bcb.herokuapp.com/movies', {
+    // if (!token) {
+    //   return;
+    // }
+    setLoading(true);
+    fetch('http://localhost:8080/movies', {
       headers: { Authorization: `Bearer ${token}` }
     })
       .then((response) => response.json())
@@ -42,11 +43,10 @@ export const MainView = () => {
             Image: movie.ImagePath
           };
         });
-        setTimeout(() => {
-          setMovies(movieFromApi);
-          setLoading(true);
-        }, 1000)
-
+        setMovies(movieFromApi);
+      })
+      .finally(() => {
+        setLoading(false);
       });
 
   }, [token])
@@ -121,7 +121,10 @@ export const MainView = () => {
                     <>
                       {movies.map((movie) => (
                         <Col className="mb-3" md={3} key={movie.id}>
-                          <MovieCard movie={movie} />
+                          <MovieCard 
+                          movie={movie}
+                          token={token}
+                           />
                         </Col>
                       ))}
                     </>
@@ -157,7 +160,8 @@ export const MainView = () => {
                 <>
                 <ProfileView 
                 token={token}
-                user={storedUser} />
+                user={storedUser}
+                movies={movies} />
                 </>
               )
             }
