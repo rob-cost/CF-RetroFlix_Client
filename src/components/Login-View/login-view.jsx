@@ -17,7 +17,7 @@ export const ModalLogin = ({ onLoggedIn }) => {
             Username: username,
             Password: password
         }
-        fetch('https://my-vintage-flix-06cde8de3bcb.herokuapp.com/login', {
+        fetch('http://localhost:8080/login', {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json"
