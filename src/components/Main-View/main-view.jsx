@@ -144,7 +144,10 @@ export const MainView = () => {
                     <>
                       <MovieView movies={movies} />
                       <hr />
-                      <SimilarMovies movies={movies} />
+                      <SimilarMovies 
+                      movies={movies} 
+                      token={token}
+                      />
                     </>
                   )}
                 </>

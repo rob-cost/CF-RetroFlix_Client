@@ -12,14 +12,8 @@ export const ProfileView = ({ token, movies }) => {
   const [isEditing, setIsEditing] = useState(false);
 
 
-
-
+  /* --- OBTAIN USER INFOS --- */
   useEffect(() => {
-    if (!token) {
-      return;
-    }
-
-    /* --- OBTAIN USER INFOS --- */
     const username = JSON.parse(localStorage.getItem('user')).Username;
 
     fetch(`http://localhost:8080/users/${username}`, {
@@ -27,13 +21,10 @@ export const ProfileView = ({ token, movies }) => {
       headers: { Authorization: `Bearer ${token}` }
     }).then((response) => response.json())
       .then((data) => {
-        console.log(`User data: ${data.FavoriteMovies}`);
-        console.log(movies)
         data.Password = '';
         setUserData(data)
         setOriginalUserData(data);
         const favMovies = movies.filter((i) => data.FavoriteMovies.includes(i.id))
-        console.log(favMovies)
         setFavoriteMovies(favMovies)
       })
       .catch((err) => console.error('Error fetching data' + err))
@@ -42,7 +33,7 @@ export const ProfileView = ({ token, movies }) => {
   if (!userData) return <div>Loading data...</div>
 
 
-  /* --- SAVE BUTTON FUNCTION --- */
+  /* ---- SAVE BUTTON FUNCTION ---- */
   const handleSave = (event) => {
     event.preventDefault();
     const data = {
@@ -81,7 +72,7 @@ export const ProfileView = ({ token, movies }) => {
   };
 
 
-  /* --- CANCEL CHANGES BUTTON FUNCTION --- */
+  /* ---- CANCEL CHANGES BUTTON FUNCTION ---- */
   const handleCancel = (event) => {
 
     event.preventDefault();
@@ -91,7 +82,7 @@ export const ProfileView = ({ token, movies }) => {
 
 
 
-  /* --- DELETE USER BUTTON FUNCTION --- */
+  /* ---- DELETE USER BUTTON FUNCTION ---- */
   const handleDelete = (event) => {
     event.preventDefault();
     const username = JSON.parse(localStorage.getItem('user')).Username;
@@ -120,7 +111,16 @@ export const ProfileView = ({ token, movies }) => {
       })
   }
 
+  /* ---- REFRESH PAGE AFTER CHANGE ---- */
 
+  const refreshFavs = () => {
+    const updatedUser = JSON.parse(localStorage.getItem('user'));
+    const favMovies = movies.filter((i) => updatedUser.FavoriteMovies.includes(i.id))
+    setFavoriteMovies(favMovies)
+  }
+  console.log(favoriteMovies)
+
+  /* ---- RETURN USER INFOS ---- */
   return (
     <>
       <Container>
@@ -199,18 +199,23 @@ export const ProfileView = ({ token, movies }) => {
 
 
       <Container>
-
         <Row className="mt-5 mb-5">
           {favoriteMovies.length === 0 ? (
             <h3>No Favorite Movies in your list</h3>
           ) : (
             <>
               <h3>Favorite Movies</h3>
-              {favoriteMovies.map((m) => (
-                <Col className="mb-3" md={3} key={m.id}>
-                  <MovieCard movie={m} />
-                </Col>
-              ))}
+              {favoriteMovies.map((m) => {
+                return (
+                  <Col className="mb-3" md={3} key={m.id}>
+                    <MovieCard
+                      movie={m}
+                      token={token}
+                      favoriteChange={refreshFavs}
+                    />
+                  </Col>
+                );
+              })}
             </>
           )}
         </Row>
