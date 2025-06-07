@@ -32,7 +32,7 @@ export const ModalLogin = ({ onLoggedIn }) => {
                     localStorage.setItem("token", data.Token);
                     onLoggedIn(data.User, data.Token);
                 } else {
-                    alert('User does not exist')
+                    alert('Username or Password incorrect')
                 }
             })
             .catch((e) => {
