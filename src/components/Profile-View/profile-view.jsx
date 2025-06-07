@@ -16,7 +16,7 @@ export const ProfileView = ({ token, movies }) => {
   useEffect(() => {
     const username = JSON.parse(localStorage.getItem('user')).Username;
 
-    fetch(`http://localhost:8080/users/${username}`, {
+    fetch(`https://my-vintage-flix-06cde8de3bcb.herokuapp.com/users/${username}`, {
       method: 'GET',
       headers: { Authorization: `Bearer ${token}` }
     }).then((response) => response.json())
@@ -44,7 +44,7 @@ export const ProfileView = ({ token, movies }) => {
       City: userData.City,
     }
     const username = JSON.parse(localStorage.getItem('user')).Username;
-    fetch(`http://localhost:8080/users/${username}`, {
+    fetch(`https://my-vintage-flix-06cde8de3bcb.herokuapp.com/users/${username}`, {
       method: 'PUT',
       body: JSON.stringify(data),
       headers: {
@@ -86,7 +86,7 @@ export const ProfileView = ({ token, movies }) => {
   const handleDelete = (event) => {
     event.preventDefault();
     const username = JSON.parse(localStorage.getItem('user')).Username;
-    fetch(`http://localhost:8080/users/${username}`, {
+    fetch(`https://my-vintage-flix-06cde8de3bcb.herokuapp.com/users/${username}`, {
       method: 'DELETE',
       headers: { "Authorization": `Bearer ${token}` }
     }

@@ -20,7 +20,7 @@ export const MovieCard = ({ movie, token, favoriteChange }) => {
   const addToFavorites = (event) => {
     event.preventDefault();
 
-    fetch(`http://localhost:8080/users/${username}/favorites/${id}`, {
+    fetch(`https://my-vintage-flix-06cde8de3bcb.herokuapp.com/users/${username}/favorites/${id}`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -32,7 +32,7 @@ export const MovieCard = ({ movie, token, favoriteChange }) => {
         console.log('Movie' + id + ' added to favorites')
 
         // Fetch API to update the local storage
-        fetch(`http://localhost:8080/users/${username}`, {
+        fetch(`https://my-vintage-flix-06cde8de3bcb.herokuapp.com/users/${username}`, {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${token}`
@@ -62,7 +62,7 @@ export const MovieCard = ({ movie, token, favoriteChange }) => {
   const removeFromFavorites = (event) => {
     event.preventDefault();
 
-    fetch(`http://localhost:8080/users/${username}/favorites/${id}`, {
+    fetch(`https://my-vintage-flix-06cde8de3bcb.herokuapp.com/users/${username}/favorites/${id}`, {
       method: 'DELETE',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -74,7 +74,7 @@ export const MovieCard = ({ movie, token, favoriteChange }) => {
         console.log('Movie' + id + ' removed to favorites')
 
         // Fetch API and update local storage
-        fetch(`http://localhost:8080/users/${username}`, {
+        fetch(`https://my-vintage-flix-06cde8de3bcb.herokuapp.com/users/${username}`, {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${token}`
