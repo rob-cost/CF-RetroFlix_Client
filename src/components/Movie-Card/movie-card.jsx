@@ -1,23 +1,25 @@
 import PropTypes from "prop-types";
 import { Button, Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 
-export const MovieCard = ({ movie, token }) => {
+export const MovieCard = ({ movie, token, favoriteChange }) => {
 
-    
-    const favoriteMovies = JSON.parse(localStorage.getItem('user')).FavoriteMovies;
-    const isFavorite = favoriteMovies.includes(movie.id)
-    console.log(favoriteMovies)
-    console.log(isFavorite)
+  const [isFavorite, setIsFavorite] = useState(false)
+
+  const id = movie.id
+  const username = JSON.parse(localStorage.getItem('user')).Username;
+  const favMovies = JSON.parse(localStorage.getItem('user')).FavoriteMovies;
+
+  useEffect(() => {
+    setIsFavorite(favMovies.includes(id))
+  }, [favMovies, id])
 
 
-    const addToFavorites = (event) => {
+/* ---- ADD MOVIE TO FAVORITE ---- */
+  const addToFavorites = (event) => {
     event.preventDefault();
-    const id = movie.id
-    console.log(id)
 
-
-    const username = JSON.parse(localStorage.getItem('user')).Username;
     fetch(`http://localhost:8080/users/${username}/favorites/${id}`, {
       method: 'POST',
       headers: {
@@ -28,20 +30,37 @@ export const MovieCard = ({ movie, token }) => {
     ).then((response) => {
       if (response.ok) {
         console.log('Movie' + id + ' added to favorites')
+
+        // Fetch API to update the local storage
+        fetch(`http://localhost:8080/users/${username}`, {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }).then((response) => response.json())
+          .then((newData) => {
+            localStorage.setItem('user', JSON.stringify(newData));
+            setIsFavorite(true)
+            if (favoriteChange) {
+              favoriteChange()
+            }
+          }).catch ((err) => {
+            console.log('Not able to fetch new data from API' + err)
+          })
       }
       else {
         console.log('Movie not added')
       }
-    }).catch((err)=> {
-      console.log('Error' + err)
+    }).catch((err) => {
+      console.log('Not able to add movie' + err)
     })
   }
+
+
+
+/* ---- REMOVE MOVIE FROM FAVORITE ---- */
   const removeFromFavorites = (event) => {
     event.preventDefault();
-    const id = movie.id
-    console.log(id)
-
-    const username = JSON.parse(localStorage.getItem('user')).Username;
 
     fetch(`http://localhost:8080/users/${username}/favorites/${id}`, {
       method: 'DELETE',
@@ -53,15 +72,33 @@ export const MovieCard = ({ movie, token }) => {
     ).then((response) => {
       if (response.ok) {
         console.log('Movie' + id + ' removed to favorites')
+
+        // Fetch API and update local storage
+        fetch(`http://localhost:8080/users/${username}`, {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }).then((response) => response.json())
+          .then((newData) => {
+            localStorage.setItem('user', JSON.stringify(newData));
+            setIsFavorite(false)
+            if (favoriteChange) {
+              favoriteChange()
+            }
+          }).catch ((err) => {
+            console.log('Not able to fetch new data from API' + err)
+          })
+      } else {
+        console.log('Movie not removed')
       }
-      else {
-        console.log('Movie removed')
-      }
-    }).catch((err)=> {
-      console.log('Error' + err)
     })
+      .catch((err) => {
+        console.log('Not able to remove movie' + err)
+      })
   }
 
+  /* ---- RETURN A MOVIE CARD ---- */
   return (
     <Link to={`/movies/${encodeURIComponent(movie.Title)}`}>
       <Card className="h-100">
@@ -72,17 +109,16 @@ export const MovieCard = ({ movie, token }) => {
           style={{ maxHeight: '400px', maxWidth: '400px', objectFit: 'cover' }} />
         <Card.Body>
           <Card.Title>{movie.Title}</Card.Title>
-          <Card.Text>{movie.Genre.Name}</Card.Text>
-          { isFavorite ? (
-            <Button onClick={removeFromFavorites}>
-            <i className="bi bi-heart"></i>
-          </Button>
-          ): (
+          <Card.Text>{movie.Genre?.Name}</Card.Text>
+          {!isFavorite ? (
             <Button onClick={addToFavorites}>
-            <i className="bi bi-heart-fill"></i>
-          </Button>
+              <i className="bi bi-heart"></i>
+            </Button>
+          ) : (
+            <Button onClick={removeFromFavorites}>
+              <i className="bi bi-heart-fill"></i>
+            </Button>
           )}
-          
         </Card.Body>
       </Card>
     </Link>
