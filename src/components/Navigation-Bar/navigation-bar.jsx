@@ -19,7 +19,7 @@ const handleSearch = (e) => {
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
       <Container fluid>
-        <Navbar.Brand href="#">Retroflix</Navbar.Brand>
+        <Navbar.Brand href="/movies">Retroflix</Navbar.Brand>
         <Navbar.Toggle aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
           <Nav

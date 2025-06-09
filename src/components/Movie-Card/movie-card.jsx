@@ -187,10 +187,11 @@ export const MovieCard = ({ movie, token, favoriteChange }) => {
     <Link to={`/movies/${encodeURIComponent(movie.Title)}`}>
       <Card className="h-100 movie-card">
         <Card.Img
+          className="movie-image"
           variant="top"
           src={movie.Image}
-          className="img-fluid"
-          style={{ height: '500px', width: '100%' , objectFit: 'cover'  }} />
+          /* className="img-fluid" */
+          />
         <Card.Body>
           <Card.Title>{movie.Title}</Card.Title>
           <Card.Text>{movie.Genre?.Name}</Card.Text>
