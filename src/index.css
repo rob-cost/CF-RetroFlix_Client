@@ -1,28 +1,127 @@
-/* body {
-  background-color: #a29fa4;
-  font-family: 'Roboto', Arial, sans-serif;
-  color: #FFD6A5;
+
+body {
+  background-color: #1A1A2E;
+  color: #ECECEC;
+  font-family: 'Courier New', Courier, monospace;
 }
 
-.btn {
-  background-color: #33FFE0;
-  color: #1B0034;
-  font-weight: bold;
-  border: none;
-  box-shadow: 0 0 10px #33FFE0;
+
+
+.navbar {
+  background-color: #252745;
 }
 
+.navbar-brand,
+.nav-link {
+  color: #ECECEC ;
+  font-style: italic;
+}
+
+/* === Movie Card Style === */
 .card {
-  background-color: #1B0034;
-  border: 0.5px solid #D883FF;
-  color: #FFD6A5;
+  background-color: #252745;
+  border: none;
+  border-radius: 10px;
+  transition: transform 0.3s ease;
+  position: relative;
+  overflow: hidden;
 }
 
+.card:hover {
+  transform: scale(1.05);
+}
+
+
+
+/* === Buttons (Watch Later & Favorite) === */
+.card .btn {
+  border: none;
+  background: transparent;
+  color: #FFF685;
+  font-size: 1.2rem;
+  padding: 6px 12px;
+  transition: color 0.3s ease;
+}
+
+.card-buttons-bottom {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 10px;
+  opacity: 0;
+}
+
+.card-buttons-bottom .btn {
+  font-size: 0.9rem;
+  padding: 4px 10px;
+}
+
+
+/* Position buttons at bottom inside card */
+.card-body {
+  position: relative;
+  padding-bottom: 50px;
+}
+
+/* Button Container */
+.card-body::after {
+  content: "";
+  display: block;
+  height: 0;
+  clear: both;
+}
+
+.card .btn:hover {
+  color: #FF4C98;
+}
+
+/* === Card Title and Text === */
 .card-title {
-  color: #33FFE0;
+  color: #FFF685;
+  font-weight: bold;
+  font-size: 1.25rem;
+  font-style: italic;
 }
 
 .card-text {
-  color: #FFD6A5;
+  color: #00D1B2;
+  font-size: 1rem;
 }
- */
+
+.movie-card {
+  position: relative;
+  transition: transform 0.3s ease;
+}
+
+.movie-card:hover  {
+  transform: scale(1.03);
+
+}
+.movie-card:hover .card-buttons-bottom {
+  opacity: 1;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.movie-view-card h1 {
+  color: #FFF685;
+  font-weight: bold;
+  font-size: 2.50rem;
+  font-style: italic;
+}
+
+.movie-view-card a {
+  color: #00D1B2;
+  font-size: 1.25rem;
+  font-style: italic;
+}
+
+.movie-view-card .btn {
+  color: #00D1B2
+}
+
+.movie-view-card a:hover {
+  color: #FF4C98;
+}
