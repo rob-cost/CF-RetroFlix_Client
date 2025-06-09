@@ -5,10 +5,19 @@ import { MovieCard } from "../Movie-Card/movie-card";
 
 
 export const SimilarMovies = ({ movies, token }) => {
+
   const { title } = useParams();
   const decodedTitle = decodeURIComponent(title);
+
+    if (!movies || movies.length === 0) {
+    return (
+      <Container>Loading similar movies ...</Container>
+    )
+  }
+  
   const movie = movies.find((m) => m.Title === decodedTitle);
-  const genre = movie.Genre?.Name;
+  console.log(movie)
+  const genre = movie.Genre.Name;
   const simMovies = movies.filter(m => m.Genre?.Name === genre && m.Title !== title)
 
   return (
