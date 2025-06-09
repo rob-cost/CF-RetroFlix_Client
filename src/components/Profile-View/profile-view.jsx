@@ -8,6 +8,7 @@ export const ProfileView = ({ token, movies }) => {
 
   const [originalUserData, setOriginalUserData] = useState(null);
   const [favoriteMovies, setFavoriteMovies] = useState([]);
+  const [toWatchMovies, setToWatchMovies] = useState([]);
   const [userData, setUserData] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
 
@@ -16,7 +17,7 @@ export const ProfileView = ({ token, movies }) => {
   useEffect(() => {
     const username = JSON.parse(localStorage.getItem('user')).Username;
 
-    fetch(`https://my-vintage-flix-06cde8de3bcb.herokuapp.com/users/${username}`, {
+    fetch(`http://localhost:8080/users/${username}`, {
       method: 'GET',
       headers: { Authorization: `Bearer ${token}` }
     }).then((response) => response.json())
@@ -25,7 +26,9 @@ export const ProfileView = ({ token, movies }) => {
         setUserData(data)
         setOriginalUserData(data);
         const favMovies = movies.filter((i) => data.FavoriteMovies.includes(i.id))
+        const watchMovies = movies.filter((i) => data.ToWatch.includes(i.id))
         setFavoriteMovies(favMovies)
+        setToWatchMovies(watchMovies)
       })
       .catch((err) => console.error('Error fetching data' + err))
   }, [token, movies])
@@ -44,7 +47,7 @@ export const ProfileView = ({ token, movies }) => {
       City: userData.City,
     }
     const username = JSON.parse(localStorage.getItem('user')).Username;
-    fetch(`https://my-vintage-flix-06cde8de3bcb.herokuapp.com/users/${username}`, {
+    fetch(`http://localhost:8080/users/${username}`, {
       method: 'PUT',
       body: JSON.stringify(data),
       headers: {
@@ -86,7 +89,7 @@ export const ProfileView = ({ token, movies }) => {
   const handleDelete = (event) => {
     event.preventDefault();
     const username = JSON.parse(localStorage.getItem('user')).Username;
-    fetch(`https://my-vintage-flix-06cde8de3bcb.herokuapp.com/users/${username}`, {
+    fetch(`http://localhost:8080/users/${username}`, {
       method: 'DELETE',
       headers: { "Authorization": `Bearer ${token}` }
     }
@@ -116,9 +119,12 @@ export const ProfileView = ({ token, movies }) => {
   const refreshFavs = () => {
     const updatedUser = JSON.parse(localStorage.getItem('user'));
     const favMovies = movies.filter((i) => updatedUser.FavoriteMovies.includes(i.id))
+    const watchMovies = movies.filter((i) => updatedUser.ToWatch.includes(i.id))
     setFavoriteMovies(favMovies)
+    setToWatchMovies(watchMovies)
   }
-  console.log(favoriteMovies)
+  
+
 
   /* ---- RETURN USER INFOS ---- */
   return (
@@ -214,6 +220,30 @@ export const ProfileView = ({ token, movies }) => {
                       favoriteChange={refreshFavs}
                     />
                   </Col>
+                );
+              })}
+            </>
+          )}
+        </Row>
+      </Container>
+
+      <Container>
+        <Row className="mt-5 mb-5">
+          {toWatchMovies.length === 0 ? (
+            <h3>Nothing to watch later</h3>
+          ) : (
+            <>
+              <h3>To Watch List</h3>
+              {toWatchMovies.map((movie) => {
+                return (
+                  <Col className="mb-3" md={3} key={movie.id}>
+                    <MovieCard
+                      movie={movie}
+                      token={token}
+                      favoriteChange={refreshFavs}
+                    />
+                  </Col>
+                  
                 );
               })}
             </>
