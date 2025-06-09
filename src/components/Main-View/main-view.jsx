@@ -17,6 +17,7 @@ export const MainView = () => {
   const [user, setUser] = useState(storedUser ? storedUser : null);
   const [token, setToken] = useState(storedToken ? storedToken : null);
   const [loading, setLoading] = useState(false);
+  const [searchItem, setSearchItem] = useState('');
 
   // Fetching list of movies from the API
   useEffect(() => {
@@ -24,7 +25,7 @@ export const MainView = () => {
     //   return;
     // }
     setLoading(true);
-    fetch('https://my-vintage-flix-06cde8de3bcb.herokuapp.com/movies', {
+    fetch('http://localhost:8080/movies', {
       headers: { Authorization: `Bearer ${token}` }
     })
       .then((response) => response.json())
@@ -51,6 +52,10 @@ export const MainView = () => {
 
   }, [token])
 
+  const filteredMovies = searchItem 
+  ? movies.filter((m) => m.Title.toLowerCase().includes(searchItem.toLowerCase()))
+  : movies;
+
 
   // Login form
   return (
@@ -58,9 +63,11 @@ export const MainView = () => {
       <NavScroll
         setUser={setUser}
         setToken={setToken}
+        searchItem={searchItem}
+        setSearchItem={setSearchItem}
       />
       <Container>
-        <Row className="justify-content-md-center mt-5 mb-5">
+        <Row className="mt-5 mb-5">
           <Routes>
             <Route
               path='/login'
@@ -119,7 +126,7 @@ export const MainView = () => {
                     </Container>
                   ) : (
                     <>
-                      {movies.map((movie) => (
+                      {filteredMovies.map((movie) => (
                         <Col className="mb-3" md={3} key={movie.id}>
                           <MovieCard 
                           movie={movie}

@@ -1,4 +1,3 @@
-
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import Nav from 'react-bootstrap/Nav';
@@ -7,7 +6,15 @@ import Navbar from 'react-bootstrap/Navbar';
 
 
 
-export const NavScroll = ({ setUser, setToken }) => {
+export const NavScroll = ({ setUser, setToken, searchItem, setSearchItem }) => {
+
+const handleSearch = (e) => {
+  e.preventDefault()
+
+  const inputType = e.target.value
+  setSearchItem(inputType)
+}
+
 
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
@@ -25,6 +32,8 @@ export const NavScroll = ({ setUser, setToken }) => {
           </Nav>
           <Form className="d-flex">
             <Form.Control
+              onChange={handleSearch}
+              value={searchItem}
               type="search"
               placeholder="Search"
               className="me-2"
