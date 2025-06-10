@@ -26,7 +26,7 @@ export const SimilarMovies = ({ movies, token }) => {
         <h2>Similar Movies</h2>
         {simMovies.map((m) => {
           return (
-            <Col className="mb-3" md={3} key={m.id}>
+            <Col className="mb-4" xs={12} sm={6} md={4} lg={3} key={m.id}>
               <MovieCard
                 movie={m}
                 token={token}

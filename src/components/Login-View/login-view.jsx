@@ -46,7 +46,7 @@ export const ModalLogin = ({ onLoggedIn }) => {
       <Col md={6} >
       <Card className='login-card border-0'>
         <Card.Body>
-          <Card.Title className='mb-5 mt-5 text-center'>Welcome to <h1>RetroFlix</h1> </Card.Title>
+          <Card.Title className='mb-5 text-center'>Welcome to <h1>RetroFlix</h1> </Card.Title>
           <Form id='login-form' onSubmit={handleSubmit}>
             <Form.Group className='mb-4' controlId='formUsername'>
               <Form.Control

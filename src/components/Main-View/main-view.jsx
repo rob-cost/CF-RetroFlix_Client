@@ -9,6 +9,7 @@ import { Col, Row, Container } from "react-bootstrap";
 import { BeatLoader } from "react-spinners";
 import { NavScroll } from "../Navigation-Bar/navigation-bar";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { NotFound404 } from "../Routes/404NotFound";
 
 export const MainView = () => {
   const [movies, setMovies] = useState([]);
@@ -52,136 +53,164 @@ export const MainView = () => {
 
   }, [token])
 
-  const filteredMovies = searchItem 
-  ? movies.filter((m) => m.Title.toLowerCase().includes(searchItem.toLowerCase()))
-  : movies;
+  const filteredMovies = searchItem
+    ? movies.filter((m) => m.Title.toLowerCase().includes(searchItem.toLowerCase()))
+    : movies;
 
 
   // Login form
   return (
     <BrowserRouter>
-      <NavScroll
-        setUser={setUser}
-        setToken={setToken}
-        searchItem={searchItem}
-        setSearchItem={setSearchItem}
-      />
-      <Container>
-        <Row className="mt-5 mb-5">
-          <Routes>
-            <Route
-              path='/login'
-              element={
-                <>
-                  {user ? (
-                    <Navigate to='/' />)
-                    :
-                    <ModalLogin
-                      onLoggedIn={(user, token) => {
-                        setUser(user);
-                        setToken(token);
-                      }} />
-                  }
-                </>
-              }
-            />
-            <Route
-              path='/signup'
-              element={
-                <>
-                  {user ? (
-                    <Navigate to='/' />
-                  ) : (
-                    <ModalSignup />
-                  )
-                  }
-                </>
-              }
-            />
 
-            <Route
-              path='/'
-              element={
-                <>
-                  {!user ? (
-                    <Navigate to='/login' replace />
-                  ) : loading ? (
-                    <Container className="d-flex justify-content-center align-items-center vh-100">
-                      <BeatLoader />
+      <Container>
+        <Routes>
+          <Route
+            path='/login'
+            element={
+              <>
+                {user ? (
+                  <Navigate to='/' />)
+                  :
+                  <Container className="d-flex justify-content-center align-items-center vh-100"
+                  style={{ transform: 'translateY(-10%)' }}>
+                  <ModalLogin
+                    onLoggedIn={(user, token) => {
+                      setUser(user);
+                      setToken(token);
+                    }} />
                     </Container>
-                  ) : (<Navigate to='/movies' replace />)
-                  }
-                </>
-              }
-            />
-            <Route
-              path='/movies'
-              element={
-                <>
-                  {!user ? (
-                    <Navigate to='/login' replace />
-                  ) : movies.length === 0 ? (
+                }
+              </>
+            }
+          />
+          <Route
+            path='/signup'
+            element={
+              <>
+                {user ? (
+                  <Navigate to='/' />
+                ) : (
+                  <Container className="d-flex justify-content-center align-items-center vh-100"
+                  style={{ transform: 'translateY(-10%)' }}>
+                  <ModalSignup />
+                  </Container>
+                )
+                }
+              </>
+            }
+          />
+
+          <Route
+            path='/'
+            element={
+              <>
+                {!user ? (
+                  <Navigate to='/login' replace />
+                ) : loading ? (
+                  <Container className="d-flex justify-content-center align-items-center vh-100">
+                    <BeatLoader />
+                  </Container>
+                ) : (<Navigate to='/movies' replace />)
+                }
+              </>
+            }
+          />
+          <Route
+            path='/movies'
+            element={
+              <>
+                {!user ? (
+                  <Navigate to='/login' replace />
+                ) : loading ?
+                  <Container className="d-flex justify-content-center align-items-center vh-100">
+                    <BeatLoader />
+                  </Container> :
+                  movies.length === 0 ? (
                     <Container className="d-flex justify-content-center align-items-center vh-100">
                       <div>Movies list is empty</div>
                     </Container>
                   ) : (
                     <>
-                      {filteredMovies.map((movie) => (
-                        <Col className="mb-3" md={3} key={movie.id}>
-                          <MovieCard 
-                          movie={movie}
-                          token={token}
-                           />
-                        </Col>
-                      ))}
+                      <NavScroll
+                        setUser={setUser}
+                        setToken={setToken}
+                        searchItem={searchItem}
+                        setSearchItem={setSearchItem}
+                      />
+                      <Row className="mt-5 mb-5 g-3">
+                        {filteredMovies.map((movie) => (
+                          <Col className="mb-4" xs={12} sm={6} md={4} lg={3} key={movie.id}>
+                            <MovieCard
+                              movie={movie}
+                              token={token}
+                            />
+                          </Col>
+                        ))}
+                      </Row>
                     </>
                   )
-                  }
-                </>
-              }
-            />
+                }
+              </>
+            }
+          />
 
-            <Route
-              path='movies/:title'
-              element={
-                <>
-                  {!user ? (
-                    <Navigate to='/login' replace />
-                  ) : (
-                    <>
-                      <MovieView movies={movies} />
-                      <hr />
-                      <SimilarMovies 
-                      movies={movies} 
+          <Route
+            path='movies/:title'
+            element={
+              <>
+                {!user ? (
+                  <Navigate to='/login' replace />
+                ) : (
+                  <>
+                    <NavScroll
+                      setUser={setUser}
+                      setToken={setToken}
+                      searchItem={searchItem}
+                      setSearchItem={setSearchItem}
+                    />
+                    <MovieView movies={movies} />
+                    <hr />
+                    <SimilarMovies
+                      movies={movies}
                       token={token}
-                      />
-                    </>
-                  )}
-                </>
-              }
-            />
-            <Route
+                    />
+                  </>
+                )}
+              </>
+            }
+          />
+          <Route
             path='/profile'
             element={
               <>
-              {!user ? (
-                <Navigate to='/login' replace/>
-              ) : (
-                <>
-                <ProfileView 
-                token={token}
-                user={storedUser}
-                movies={movies} />
-                </>
-              )
-            }
+                {!user ? (
+                  <Navigate to='/login' replace />
+                ) : (
+                  <>
+                    <NavScroll
+                      setUser={setUser}
+                      setToken={setToken}
+                      searchItem={searchItem}
+                      setSearchItem={setSearchItem}
+                    />
+                    <ProfileView
+                      token={token}
+                      user={storedUser}
+                      movies={movies} />
+                  </>
+                )
+                }
               </>
             }
-            />
+          />
 
+          <Route
+            path="/*"
+            element={<NotFound404 />}
+          />
 
-          </Routes>
-        </Row>
+        </Routes>
+
       </Container>
     </BrowserRouter >
   );

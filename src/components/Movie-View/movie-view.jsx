@@ -1,16 +1,13 @@
 import { Container, Row, Col, Button, Modal, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
-import { useState } from "react";
+
 
 export const MovieView = ({ movies }) => {
 
   const { title } = useParams();
   const decodedTitle = decodeURIComponent(title);
   const movie = movies.find((m) => m.Title === decodedTitle);
-  const [show, setShow] = useState(false);
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
 
   if (!movie) {
     return (
@@ -20,15 +17,10 @@ export const MovieView = ({ movies }) => {
     )
   };
 
-  const genreTooltip = (
-    <Tooltip id="genre-tooltip">
-      Genre: {movie.Genre?.Name || 'Unknown'}
+  const genreTooltip =
+    <Tooltip id="genre-tooltip" >
+      {movie.Genre?.Description || 'Unknown'}
     </Tooltip>
-  );
-
-
-
-
 
   return (
     <Container>
@@ -37,20 +29,25 @@ export const MovieView = ({ movies }) => {
           <div>
             <h1>{movie.Title}</h1>
             <p className="d-flex justify-content-between">
-              <Link 
-              onClick={handleShow}
+
+              <OverlayTrigger
+                placement="right"
+                overlay={
+                  <Tooltip>{movie.Director?.Bio}</Tooltip>
+                }
               >
-                {movie.Director?.Name}
-              </Link>
-              
+                <Link>
+                  {movie.Director?.Name}
+                </Link>
+              </OverlayTrigger>
+
 
               <OverlayTrigger
                 placement="left"
-                delay={{ show: 250, hide: 400 }}
                 overlay={genreTooltip}
               >
-                <Link 
-                variant="success"
+                <Link
+                  variant="success"
                 >
                   {movie.Genre?.Name}
                 </Link>
@@ -58,35 +55,27 @@ export const MovieView = ({ movies }) => {
             </p>
             <p>{movie.Release}</p>
 
-            <Modal show={show} onHide={handleClose}>
-              <Modal.Header closeButton>
-                <Modal.Title>{movie.Director?.Name}</Modal.Title>
-              </Modal.Header>
-              <Modal.Body>{movie.Director?.Bio}</Modal.Body>
-            </Modal>
 
             <p>"{movie.Description}"</p>
 
             <p className="d-flex flex-wrap gap-2">
-            {movie.Actors.map((actor, index) => {
-              return(
-              <OverlayTrigger
-              placement="bottom"
-              delay={{ show: 250, hide: 400 }}
-              overlay={
-                <Tooltip id={`actor-tooltip-${index}`}>
-                Actor: {actor.Bio || 'Unknown'}
-                </Tooltip>
-              }
-              >
-              <Link>{actor.Name}  </Link>
-              </OverlayTrigger>
-
-            )})}
+              {movie.Actors.map((actor, index) => {
+                return (
+                  <OverlayTrigger
+                    placement="bottom"
+                    overlay={
+                      <Tooltip id={`actor-tooltip-${index}`}>
+                        {actor.Bio || 'Unknown'}
+                      </Tooltip>
+                    }
+                  >
+                    <Link>{actor.Name}  </Link>
+                  </OverlayTrigger>
+                )
+              })}
             </p>
-            
 
-          {/*   <p>{movie.Rating}</p> */}
+            {/*   <p>{movie.Rating}</p> */}
           </div>
           <Link to={'/movies'}>
             <Button

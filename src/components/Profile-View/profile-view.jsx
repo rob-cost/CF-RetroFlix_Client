@@ -125,7 +125,6 @@ export const ProfileView = ({ token, movies }) => {
   }
   
 
-
   /* ---- RETURN USER INFOS ---- */
   return (
     <>
@@ -136,7 +135,6 @@ export const ProfileView = ({ token, movies }) => {
               <Card.Body>
                 <Card.Title>Your Profile</Card.Title>
                 <Form
-                 onSubmit={handleSave}
                  className="profile-form">
                   <Form.Group className="mb-3" controlId="form-username">
                     <Form.Label>Username</Form.Label>
@@ -190,14 +188,14 @@ export const ProfileView = ({ token, movies }) => {
                   {!isEditing ? (
                     <>
                     <div className="d-flex justify-content-end gap-2 mt-3">
-                      <Button onClick={() => { setIsEditing(true) }}>Change</Button>
+                      <Button type="button" onClick={() => { setIsEditing(true) }}>Change</Button>
                       <Button onClick={handleDelete}>Delete</Button>
                       </div>
                     </>
                   ) : (
                     <>
                     <div className="d-flex justify-content-end gap-2 mt-3">
-                      <Button type="submit" variant='success'>Save</Button>
+                      <Button onClick={handleSave} variant='success'>Save</Button>
                       <Button onClick={handleCancel}>Cancel</Button>
                       </div>
                     </>
@@ -211,7 +209,7 @@ export const ProfileView = ({ token, movies }) => {
 
 
       <Container>
-        <Row className="mt-5 mb-5">
+        <Row className="mt-5">
           {favoriteMovies.length === 0 ? (
             <h3>No Favorite Movies in your list</h3>
           ) : (
@@ -219,7 +217,7 @@ export const ProfileView = ({ token, movies }) => {
               <h3>Favorite Movies</h3>
               {favoriteMovies.map((m) => {
                 return (
-                  <Col className="mb-3" md={3} key={m.id}>
+                  <Col className="mt-5 mb-5" xs={12} sm={6} md={4} lg={3} key={m.id}>
                     <MovieCard
                       movie={m}
                       token={token}
@@ -234,7 +232,7 @@ export const ProfileView = ({ token, movies }) => {
       </Container>
 
       <Container>
-        <Row className="mt-5 mb-5">
+        <Row >
           {toWatchMovies.length === 0 ? (
             <h3>Nothing to watch later</h3>
           ) : (
@@ -242,7 +240,7 @@ export const ProfileView = ({ token, movies }) => {
               <h3>To Watch List</h3>
               {toWatchMovies.map((movie) => {
                 return (
-                  <Col className="mb-3" md={3} key={movie.id}>
+                  <Col className="mt-5 mb-5" xs={12} sm={6} md={4} lg={3} key={movie.id}>
                     <MovieCard
                       movie={movie}
                       token={token}
