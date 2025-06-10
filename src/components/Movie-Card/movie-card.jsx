@@ -182,6 +182,11 @@ export const MovieCard = ({ movie, token, favoriteChange }) => {
       })
   }
 
+  let text = movie.Description
+  if (text.length > 50) {
+    text = text.substring(0,49) + "..."
+  }
+
   /* ---- RETURN A MOVIE CARD ---- */
   return (
     <Link to={`/movies/${encodeURIComponent(movie.Title)}`}>
@@ -192,9 +197,12 @@ export const MovieCard = ({ movie, token, favoriteChange }) => {
           src={movie.Image}
           /* className="img-fluid" */
           />
-        <Card.Body>
+        <Card.Body className="card-body">
           <Card.Title>{movie.Title}</Card.Title>
-          <Card.Text>{movie.Genre?.Name}</Card.Text>
+          <Card.Text
+          className="genre-text"
+          >{movie.Genre?.Name}</Card.Text>
+          <Card.Text>"{text}"</Card.Text>
         </Card.Body>
         <div className="card-buttons-bottom">
           {!toWatch ? (

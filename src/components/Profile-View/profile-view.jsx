@@ -131,11 +131,13 @@ export const ProfileView = ({ token, movies }) => {
     <>
       <Container>
         <Row>
-          <Col>
+          <Col md={5}>
             <Card>
               <Card.Body>
                 <Card.Title>Your Profile</Card.Title>
-                <Form onSubmit={handleSave}>
+                <Form
+                 onSubmit={handleSave}
+                 className="profile-form">
                   <Form.Group className="mb-3" controlId="form-username">
                     <Form.Label>Username</Form.Label>
                     <Form.Control
@@ -187,13 +189,17 @@ export const ProfileView = ({ token, movies }) => {
 
                   {!isEditing ? (
                     <>
+                    <div className="d-flex justify-content-end gap-2 mt-3">
                       <Button onClick={() => { setIsEditing(true) }}>Change</Button>
                       <Button onClick={handleDelete}>Delete</Button>
+                      </div>
                     </>
                   ) : (
                     <>
+                    <div className="d-flex justify-content-end gap-2 mt-3">
                       <Button type="submit" variant='success'>Save</Button>
                       <Button onClick={handleCancel}>Cancel</Button>
+                      </div>
                     </>
                   )}
                 </Form>

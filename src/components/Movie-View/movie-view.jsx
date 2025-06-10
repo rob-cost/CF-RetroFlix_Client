@@ -79,8 +79,7 @@ export const MovieView = ({ movies }) => {
                 </Tooltip>
               }
               >
-              <Link>
-              {actor.Name}</Link>
+              <Link>{actor.Name}  </Link>
               </OverlayTrigger>
 
             )})}

@@ -1,43 +1,58 @@
+:root {
+  --color-background: #1A1A2E;
+  --color-surface: #252745;
+  --color-text: #ECECEC;
+  --color-title: #FFF685;
+  --color-highlight: #00D1B2;
+  --color-accent: #FF4C98;
+  
+  --font-main: 'Courier New', Courier, monospace;
 
-body {
-  background-color: #1A1A2E;
-  color: #ECECEC;
-  font-family: 'Courier New', Courier, monospace;
+  --card-width: 280px;
+  --card-height: 250px;
+  --image-height: 140px;
 }
 
-
+body {
+  background-color: var(--color-background);
+  color: var(--color-text);
+  font-family: var(--font-main);
+}
 
 .navbar {
-  background-color: #252745;
+  background-color: var(--color-background);
 }
 
 .navbar-brand,
 .nav-link {
-  color: #ECECEC ;
-  font-style: italic;
+  color: var(--color-text);
+  font-family: var(--font-main);
   transition: transform 0.1s ease;
+}
+
+.nav-link {
+  font-size: large;
 }
 
 .navbar-brand:hover,
 .nav-link:hover {
-  color: #ECECEC ;
+  color: var(--color-text);
   transform: scale(1.03);
 }
 
 /* === Movie Card Style === */
 .card {
-  background-color: #252745;
+  background-color: var(--color-surface);
   border: none;
   border-radius: 10px;
   position: relative;
   overflow: hidden;
 }
 
-
 .movie-card {
-  width: 280px;
-  height: 250px;
-  background-color: #252745;
+  width: var(--card-width);
+  height: var(--card-height);
+  background-color: var(--color-surface);
   border: none;
   border-radius: 10px;
   overflow: hidden;
@@ -46,31 +61,37 @@ body {
   flex-direction: column;
 }
 
-.movie-card:hover  {
-  transform: scale(1.03);
+.movie-card .card-body {
+  position: relative;
+  padding-bottom: 50px;
+}
 
+.movie-card:hover {
+  transform: scale(1.03);
 }
 
 .movie-image {
   width: 100%;
-  height: 140px; 
+  height: var(--image-height); 
   object-fit: cover;
 }
 
-
 /* === Card Title and Text === */
 .card-title {
-  color: #FFF685;
+  color: var(--color-title);
   font-weight: bold;
   font-size: 1.25rem;
   font-style: italic;
 }
 
 .card-text {
-  color: #00D1B2;
+  color: var(--color-highlight);
   font-size: 1rem;
 }
 
+.genre-text {
+  text-align: right;
+}
 
 .movie-card:hover .card-buttons-bottom {
   opacity: 1;
@@ -82,32 +103,31 @@ a {
 }
 
 .movie-view-card h1 {
-  color: #FFF685;
+  color: var(--color-title);
   font-weight: bold;
-  font-size: 2.50rem;
+  font-size: 2.5rem;
   font-style: italic;
 }
 
 .movie-view-card a {
-  color: #00D1B2;
+  color: var(--color-highlight);
   font-size: 1.25rem;
   font-style: italic;
 }
 
 .movie-view-card .btn {
-  color: #00D1B2
+  color: var(--color-highlight);
 }
 
 .movie-view-card a:hover {
-  color: #FF4C98;
+  color: var(--color-accent);
 }
 
-
-/* === Buttons (Watch Later & Favorite) === */
+/* === Buttons === */
 .card .btn {
   border: none;
   background: transparent;
-  color: #FFF685;
+  color: var(--color-title);
   font-size: 1.2rem;
   padding: 6px 12px;
   transition: color 0.3s ease;
@@ -130,23 +150,17 @@ a {
   padding: 4px 10px;
 }
 
-
-/* Position buttons at bottom inside card */
-.card-body {
-  position: relative;
-  padding-bottom: 50px;
+.card .btn:hover,
+.custom-link:hover {
+  color: var(--color-accent);
 }
 
-/* Button Container */
-.card-body::after {
-  content: "";
-  display: block;
-  height: 0;
-  clear: both;
+/* === Profile Form === */
+.profile.form .btn {
+  align-items: right;
 }
 
-.card .btn:hover {
-  color: #FF4C98;
+/* === Modal === */
+.login-card {
+  background-color: var(--color-background);
 }
-
-
