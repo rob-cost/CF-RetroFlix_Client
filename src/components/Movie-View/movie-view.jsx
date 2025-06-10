@@ -1,12 +1,22 @@
 import { Container, Row, Col, Button, Modal, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
+import { UseMovieAction } from "../Use-Movie-Action/useMovieAction";
 
 
-export const MovieView = ({ movies }) => {
+export const MovieView = ({ movies, token, favoriteChange }) => {
 
   const { title } = useParams();
   const decodedTitle = decodeURIComponent(title);
   const movie = movies.find((m) => m.Title === decodedTitle);
+  
+  const {
+    isFavorite,
+    toWatch,
+    addToFavorites,
+    removeFromFavorites,
+    addToWatch,
+    removeFromToWatch
+  } = UseMovieAction ({movie, token, favoriteChange});
 
 
   if (!movie) {
@@ -77,12 +87,37 @@ export const MovieView = ({ movies }) => {
 
             {/*   <p>{movie.Rating}</p> */}
           </div>
+          <div>
           <Link to={'/movies'}>
             <Button
               className="btn align-self-start"
 
             >Back</Button>
           </Link>
+          {!toWatch ? (
+            <Button onClick={addToWatch}
+              >
+              + To Watch
+            </Button>
+          ) : (
+            <Button
+              onClick={removeFromToWatch}
+              >
+              - Remove
+            </Button>
+          )}
+          {!isFavorite ? (
+            <Button 
+            onClick={addToFavorites}
+            className="bi bi-heart ">
+            </Button>
+          ) : (
+            <Button 
+            onClick={removeFromFavorites}
+            className="bi bi-heart-fill">
+            </Button>
+          )}
+          </div>
         </Col>
         <Col md={5}>
           <div className="position-relative">

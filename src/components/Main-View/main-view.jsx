@@ -168,7 +168,10 @@ export const MainView = () => {
                       searchItem={searchItem}
                       setSearchItem={setSearchItem}
                     />
-                    <MovieView movies={movies} />
+                    <MovieView 
+                    movies={movies}
+                    token={token}
+                    />
                     <hr />
                     <SimilarMovies
                       movies={movies}
