@@ -32,23 +32,24 @@ The app allows users to browse a curated list of movies, get detailed info about
 
 ## Features
 
-#1. Login & Signup
-    - Log in with your username and password
-    - Register a new account with username, password, email, birthday, and city
+### 1. Login & Signup
+- Log in with your username and password  
+- Register a new account with username, password, email, birthday, and city
 
-#2. Main View
-    - Browse all movies with title, image, and short description
-    - Search for a particular movie
-    - Add or remove a movie from the favorite or to-watch list
-    - Navigate to your profile
-    - Log out of the profile
-    
-#3. Single Movie View
-    - See full details (description, genre, director, actors, etc.)  
-    
-#4. Profile View
-    - See and update your info
-    - Check your favorite and to-watch list
+### 2. Main View
+- Browse all movies with title, image, and short description  
+- Search for a particular movie  
+- Add or remove a movie from the favorite or to-watch list  
+- Navigate to your profile  
+- Log out of your profile
+
+### 3. Single Movie View
+- View full movie details including description, genre, director, and actors
+
+### 4. Profile View
+- View and update your user information  
+- Check your favorite and to-watch lists
+
 
 ---
 
