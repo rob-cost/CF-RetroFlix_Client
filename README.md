@@ -72,7 +72,7 @@ npm install
 
 Create a .env file in the root directory and add your environment variables:
 envVITE_API_BASE_URL=http://localhost:8080
-# Add other environment variables as needed
+#### Add other environment variables as needed
 
 
 ### 4. Start the Development Server
@@ -80,7 +80,7 @@ envVITE_API_BASE_URL=http://localhost:8080
 ```bash
 npm run dev
 ```
-# or
+#### or
 ```bash
 yarn dev
 ```
