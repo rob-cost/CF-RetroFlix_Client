@@ -45,6 +45,7 @@ The app allows users to browse a curated list of movies, get detailed info about
 
 ### 3. Single Movie View
 - View full movie details including description, genre, director, and actors
+- View similar movies
 
 ### 4. Profile View
 - View and update your user information  
