@@ -17,6 +17,8 @@
 
 The app allows users to browse a curated list of movies, get detailed info about each film, and manage a personal profile with saved favorites and a watchlist.
 
+[retroflixvintage.netlify.app](https://retroflixvintage.netlify.app)
+
 ---
 
 ## Tech Stack
@@ -25,7 +27,7 @@ The app allows users to browse a curated list of movies, get detailed info about
 - Backend: Node.js & Express (custom API: `RettroFlix_API`)  
 - Database: MongoDB (hosted on MongoDB Atlas)  
 - Deployment:  
-  - Frontend deployed on Heroku  
+  - Frontend deployed on Netlify  
   - API is also deployed on Heroku
 
 ---
