@@ -68,8 +68,21 @@ cd myflixvintage-client
 npm install
 ```
 
-### 3. Start the app
+### 3. Environment Setup
+
+Create a .env file in the root directory and add your environment variables:
+envVITE_API_BASE_URL=http://localhost:8080
+# Add other environment variables as needed
+
+
+### 4. Start the Development Server
 
 ```bash
-npm start
+npm run dev
 ```
+# or
+```bash
+yarn dev
+```
+The app will be available at http://localhost:5173 (or the port shown in your terminal).
+
