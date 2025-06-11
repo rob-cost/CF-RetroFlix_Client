@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 
 export const UseMovieAction = ({ movie, token, favoriteChange }) => {
-  
+
   console.log(movie)
+  
 
   const [isFavorite, setIsFavorite] = useState(false)
   const [toWatch, setToWatch] = useState(false)
 
-  const id = movie.id
   const username = JSON.parse(localStorage.getItem('user')).Username;
   const favMovies = JSON.parse(localStorage.getItem('user')).FavoriteMovies;
   const toWatchMovies = JSON.parse(localStorage.getItem('user')).ToWatch;
@@ -15,23 +15,23 @@ export const UseMovieAction = ({ movie, token, favoriteChange }) => {
   
 
   useEffect(() => {
-    setIsFavorite(favMovies.includes(id))
-    setToWatch(toWatchMovies.includes(id))
-  }, [favMovies, id, toWatchMovies])
+    setIsFavorite(favMovies.includes(movie.id))
+    setToWatch(toWatchMovies.includes(movie.id))
+  }, [favMovies, movie, toWatchMovies])
 
-  if (!id) {
+/*   if (!id) {
   return (
     <Container>
       <div>Movie not found</div>
     </Container>
   )
-};
+}; */
 
   /* ---- ADD MOVIE TO FAVORITE ---- */
   const addToFavorites = (event) => {
     event.preventDefault();
 
-    fetch(`http://localhost:8080/users/${username}/favorites/${id}`, {
+    fetch(`http://localhost:8080/users/${username}/favorites/${movie.id}`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -40,7 +40,7 @@ export const UseMovieAction = ({ movie, token, favoriteChange }) => {
     }
     ).then((response) => {
       if (response.ok) {
-        console.log('Movie' + id + ' added to favorites')
+        console.log('Movie' + movie.id + ' added to favorites')
 
         // Fetch API to update the local storage
         fetch(`http://localhost:8080/users/${username}`, {
@@ -72,7 +72,7 @@ export const UseMovieAction = ({ movie, token, favoriteChange }) => {
   const removeFromFavorites = (event) => {
     event.preventDefault();
 
-    fetch(`http://localhost:8080/users/${username}/favorites/${id}`, {
+    fetch(`http://localhost:8080/users/${username}/favorites/${movie.id}`, {
       method: 'DELETE',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -81,7 +81,7 @@ export const UseMovieAction = ({ movie, token, favoriteChange }) => {
     }
     ).then((response) => {
       if (response.ok) {
-        console.log('Movie' + id + ' removed from favorites')
+        console.log('Movie' + movie.id + ' removed from favorites')
 
         // Fetch API and update local storage
         fetch(`http://localhost:8080/users/${username}`, {
@@ -112,7 +112,7 @@ export const UseMovieAction = ({ movie, token, favoriteChange }) => {
   const addToWatch = (event) => {
     event.preventDefault();
 
-    fetch(`http://localhost:8080/users/${username}/towatch/${id}`, {
+    fetch(`http://localhost:8080/users/${username}/towatch/${movie.id}`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -121,7 +121,7 @@ export const UseMovieAction = ({ movie, token, favoriteChange }) => {
     }
     ).then((response) => {
       if (response.ok) {
-        console.log('Movie' + id + ' added to to watch list')
+        console.log('Movie' + movie.id + ' added to to watch list')
 
         // Fetch API to update the local storage
         fetch(`http://localhost:8080/users/${username}`, {
@@ -153,7 +153,7 @@ export const UseMovieAction = ({ movie, token, favoriteChange }) => {
   const removeFromToWatch = (event) => {
     event.preventDefault();
 
-    fetch(`http://localhost:8080/users/${username}/towatch/${id}`, {
+    fetch(`http://localhost:8080/users/${username}/towatch/${movie.id}`, {
       method: 'DELETE',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -162,7 +162,7 @@ export const UseMovieAction = ({ movie, token, favoriteChange }) => {
     }
     ).then((response) => {
       if (response.ok) {
-        console.log('Movie' + id + ' removed from to watch list')
+        console.log('Movie' + movie.id + ' removed from to watch list')
 
         // Fetch API and update local storage
         fetch(`http://localhost:8080/users/${username}`, {

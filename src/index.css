@@ -116,18 +116,38 @@ a {
   font-style: italic;
 }
 
-.movie-view-card .btn {
-  color: var(--color-highlight);
-}
-
 .movie-view-card a:hover {
   color: var(--color-accent);
 }
 
+.movie-view-card .btn {
+  color: var(--color-title);
+  background: transparent;
+  box-shadow: none;
+}
+
+.movie-view-card .btn:hover {
+  color: var(--color-highlight);
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+
+.movie-view-card .btn:focus,
+.movie-view-card .btn:active {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+
 /* === Buttons === */
-.card .btn {
+.card .btn,
+.btn,
+.btn:focus,
+.btn:active {
   border: none;
   background: transparent;
+  box-shadow: none;
   color: var(--color-title);
   font-size: 1.2rem;
   padding: 6px 12px;
@@ -137,6 +157,7 @@ a {
 .card-buttons-bottom {
   display: flex;
   justify-content: space-between;
+  box-shadow: none;
   padding-top: 10px;
   opacity: 0;
   transition: opacity 0.3s ease;
@@ -154,6 +175,7 @@ a {
 .card .btn:hover,
 .custom-link:hover {
   color: var(--color-accent);
+  box-shadow: none;
 }
 
 /* === Profile Form === */

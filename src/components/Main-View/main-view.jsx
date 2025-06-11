@@ -19,6 +19,7 @@ export const MainView = () => {
   const [token, setToken] = useState(storedToken ? storedToken : null);
   const [loading, setLoading] = useState(false);
   const [searchItem, setSearchItem] = useState('');
+  
 
   // Fetching list of movies from the API
   useEffect(() => {
@@ -53,6 +54,10 @@ export const MainView = () => {
 
   }, [token])
 
+  console.log(movies)
+
+
+  // Search function
   const filteredMovies = searchItem
     ? movies.filter((m) => m.Title.toLowerCase().includes(searchItem.toLowerCase()))
     : movies;
@@ -160,7 +165,15 @@ export const MainView = () => {
               <>
                 {!user ? (
                   <Navigate to='/login' replace />
-                ) : (
+                ) : loading ?
+                  <Container className="d-flex justify-content-center align-items-center vh-100">
+                    <BeatLoader />
+                  </Container> :
+                  movies.length === 0 ? (
+                    <Container className="d-flex justify-content-center align-items-center vh-100">
+                      <div>Movies list is empty</div>
+                    </Container>
+                  ) : (
                   <>
                     <NavScroll
                       setUser={setUser}
@@ -172,6 +185,7 @@ export const MainView = () => {
                     movies={movies}
                     token={token}
                     />
+
                     <hr />
                     <SimilarMovies
                       movies={movies}

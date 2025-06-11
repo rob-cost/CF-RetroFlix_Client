@@ -5,6 +5,9 @@ import { UseMovieAction } from "../Use-Movie-Action/useMovieAction";
 
 export const MovieView = ({ movies, token, favoriteChange }) => {
 
+  console.log(movies)
+
+
   const { title } = useParams();
   const decodedTitle = decodeURIComponent(title);
   const movie = movies.find((m) => m.Title === decodedTitle);
@@ -72,6 +75,7 @@ export const MovieView = ({ movies, token, favoriteChange }) => {
               {movie.Actors.map((actor, index) => {
                 return (
                   <OverlayTrigger
+                    key={movie.Actors.Name}
                     placement="bottom"
                     overlay={
                       <Tooltip id={`actor-tooltip-${index}`}>
@@ -87,21 +91,24 @@ export const MovieView = ({ movies, token, favoriteChange }) => {
 
             {/*   <p>{movie.Rating}</p> */}
           </div>
-          <div>
+          <div className="d-flex justify-content-between align-items-center">
           <Link to={'/movies'}>
             <Button
               className="btn align-self-start"
 
             >Back</Button>
           </Link>
+          <div className="d-flex gap-2">
           {!toWatch ? (
             <Button onClick={addToWatch}
+            className="btn"
               >
               + To Watch
             </Button>
           ) : (
             <Button
               onClick={removeFromToWatch}
+              className="btn"
               >
               - Remove
             </Button>
@@ -109,14 +116,15 @@ export const MovieView = ({ movies, token, favoriteChange }) => {
           {!isFavorite ? (
             <Button 
             onClick={addToFavorites}
-            className="bi bi-heart ">
+            className="bi bi-heart btn">
             </Button>
           ) : (
             <Button 
             onClick={removeFromFavorites}
-            className="bi bi-heart-fill">
+            className="bi bi-heart-fill btn">
             </Button>
           )}
+          </div>
           </div>
         </Col>
         <Col md={5}>
