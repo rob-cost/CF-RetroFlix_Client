@@ -27,7 +27,7 @@ export const MainView = () => {
     //   return;
     // }
     setLoading(true);
-    fetch('http://localhost:8080/movies', {
+    fetch('https://my-vintage-flix-06cde8de3bcb.herokuapp.com/movies', {
       headers: { Authorization: `Bearer ${token}` }
     })
       .then((response) => response.json())
