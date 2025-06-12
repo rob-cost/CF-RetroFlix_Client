@@ -12,6 +12,7 @@ You can visit the app here: [retroflixvintage.netlify.app](https://retroflixvint
 - [Tech Stack](#tech-stack)  
 - [Features](#features)  
 - [Getting Started](#getting-started)
+- [Iterface example](#interface-example)
 
 ---
 
