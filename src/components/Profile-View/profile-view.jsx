@@ -217,7 +217,7 @@ export const ProfileView = ({ token, movies }) => {
               <h3>Favorite Movies</h3>
               {favoriteMovies.map((m) => {
                 return (
-                  <Col className="mt-5 mb-5" xs={12} sm={6} md={4} lg={3} key={m.id}>
+                  <Col className="mt-5 mb-5 d-flex d-sm-block justify-content-center" xs={12} sm={6} md={4} lg={3} key={m.id}>
                     <MovieCard
                       movie={m}
                       token={token}
@@ -240,7 +240,7 @@ export const ProfileView = ({ token, movies }) => {
               <h3>To Watch List</h3>
               {toWatchMovies.map((movie) => {
                 return (
-                  <Col className="mt-5 mb-5" xs={12} sm={6} md={4} lg={3} key={movie.id}>
+                  <Col className="mt-5 mb-5 d-flex d-sm-block justify-content-center" xs={12} sm={6} md={4} lg={3} key={movie.id}>
                     <MovieCard
                       movie={movie}
                       token={token}
