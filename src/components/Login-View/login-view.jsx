@@ -4,11 +4,15 @@ import Modal from 'react-bootstrap/Modal';
 import { useState } from 'react';
 import { Form, Card, Container, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-
+import { ToastContainer, toast } from 'react-toastify';
 
 export const ModalLogin = ({ onLoggedIn }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
+  const notify = () => toast('Username or Password incorrect', {
+    position:'top-center'
+  });
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -32,7 +36,7 @@ export const ModalLogin = ({ onLoggedIn }) => {
           localStorage.setItem("token", data.Token);
           onLoggedIn(data.User, data.Token);
         } else {
-          alert('Username or Password incorrect')
+          notify()
         }
       })
       .catch((e) => {
@@ -76,6 +80,7 @@ export const ModalLogin = ({ onLoggedIn }) => {
             variant='primary'
           >
             Login</Button>
+            <ToastContainer autoClose={false}/>
         </div>
         <div className="d-flex justify-content-end mb-2">
           <Link className='custom-link' to={'/signup'}>

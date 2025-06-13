@@ -4,6 +4,7 @@ import { Form, Button, Row, Col, Container, Card } from "react-bootstrap"
 import CardHeader from "react-bootstrap/esm/CardHeader";
 import Modal from 'react-bootstrap/Modal';
 import { Link, useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 
 export const ModalSignup = () => {
   const [username, setUsername] = useState('');
@@ -13,6 +14,10 @@ export const ModalSignup = () => {
   const [city, setCity] = useState('');
 
   const navigate = useNavigate();
+
+  const notify = () => toast('Signup successful', {
+      position:'top-center'
+    });
 
 
   const handleSubmit = (event) => {
@@ -35,7 +40,7 @@ export const ModalSignup = () => {
     })
       .then((response) => {
         if (response.ok) {
-          alert('Signup successful');
+          notify();
           navigate('/login');
         } else {
           response.text().then((err) => {
@@ -119,6 +124,7 @@ export const ModalSignup = () => {
                 variant='primary'
               >Submit</Button>
             </div>
+            <ToastContainer autoclose={false} />
             <div className="d-flex justify-content-end mb-2">
             <Link to={'/login'}>
               <span>
