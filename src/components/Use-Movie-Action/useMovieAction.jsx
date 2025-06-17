@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 
 export const UseMovieAction = ({ movie, token, favoriteChange }) => {
 
-  console.log(movie)
+  // console.log(movie)
   
 
   const [isFavorite, setIsFavorite] = useState(false)

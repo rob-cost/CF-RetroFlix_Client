@@ -5,9 +5,6 @@ import { UseMovieAction } from "../Use-Movie-Action/useMovieAction";
 
 export const MovieView = ({ movies, token, favoriteChange }) => {
 
-  console.log(movies)
-
-
   const { title } = useParams();
   const decodedTitle = decodeURIComponent(title);
   const movie = movies.find((m) => m.Title === decodedTitle);

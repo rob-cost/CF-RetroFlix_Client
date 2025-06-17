@@ -10,6 +10,7 @@ import { BeatLoader } from "react-spinners";
 import { NavScroll } from "../Navigation-Bar/navigation-bar";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { NotFound404 } from "../Routes/404NotFound";
+import { getMovies } from "../../connections/api";
 
 export const MainView = () => {
   const [movies, setMovies] = useState([]);
@@ -23,38 +24,10 @@ export const MainView = () => {
 
   // Fetching list of movies from the API
   useEffect(() => {
-    // if (!token) {
-    //   return;
-    // }
-    setLoading(true);
-    fetch('https://my-vintage-flix-06cde8de3bcb.herokuapp.com/movies', {
-      headers: { Authorization: `Bearer ${token}` }
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log('Movies from API ' + data);
-        const movieFromApi = data.map((movie) => {
-          return {
-            id: movie.id,
-            Title: movie.Title,
-            Genre: movie.Genre,
-            Description: movie.Description,
-            Director: movie.Director,
-            Actors: movie.Actors,
-            Release: movie.Release,
-            Rating: movie.Rating,
-            Image: movie.ImagePath
-          };
-        });
-        setMovies(movieFromApi);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-
+    getMovies(setLoading, token, setMovies)
   }, [token])
 
-  console.log(movies)
+  // console.log(movies)
 
 
   // Search function

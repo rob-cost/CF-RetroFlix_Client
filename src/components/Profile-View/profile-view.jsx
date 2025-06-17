@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Container, Row, Col, Card, Form, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { MovieCard } from "../Movie-Card/movie-card";
+import { deleteUser, getUser, updateUser } from "../../connections/api";
 
 
 export const ProfileView = ({ token, movies }) => {
@@ -14,14 +15,11 @@ export const ProfileView = ({ token, movies }) => {
 
 
   /* --- OBTAIN USER INFOS --- */
-  useEffect(() => {
-    const username = JSON.parse(localStorage.getItem('user')).Username;
 
-    fetch(`https://my-vintage-flix-06cde8de3bcb.herokuapp.com/users/${username}`, {
-      method: 'GET',
-      headers: { Authorization: `Bearer ${token}` }
-    }).then((response) => response.json())
-      .then((data) => {
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await getUser(token)
         data.Password = '';
         setUserData(data)
         setOriginalUserData(data);
@@ -29,15 +27,22 @@ export const ProfileView = ({ token, movies }) => {
         const watchMovies = movies.filter((i) => data.ToWatch.includes(i.id))
         setFavoriteMovies(favMovies)
         setToWatchMovies(watchMovies)
-      })
-      .catch((err) => console.error('Error fetching data' + err))
+      }
+      catch (err) {
+        console.alert('Error' + err)
+      }
+    }
+    if (token) {
+      fetchData()
+    }
   }, [token, movies])
 
   if (!userData) return <div>Loading data...</div>
 
 
   /* ---- SAVE BUTTON FUNCTION ---- */
-  const handleSave = (event) => {
+
+  const handleSave = async (event) => {
     event.preventDefault();
     const data = {
       Username: userData.Username,
@@ -46,33 +51,15 @@ export const ProfileView = ({ token, movies }) => {
       Birthday: new Date(userData.Birthday).toISOString(),
       City: userData.City,
     }
-    const username = JSON.parse(localStorage.getItem('user')).Username;
-    fetch(`https://my-vintage-flix-06cde8de3bcb.herokuapp.com/users/${username}`, {
-      method: 'PUT',
-      body: JSON.stringify(data),
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`
-      }
-
-    }).then((response) => {
-      if (response.ok) {
-        alert('Profile updated')
-        setIsEditing(false)
-      }
-      else {
-        response.json().then((err) => {
-          console.error('Server' + err);
-          alert('Updated failed: ' + err.message)
-        })
-      }
-    })
-      .catch((err) => {
-        alert('Error' + err)
-        console.log('Error' + err)
-      })
-
-  };
+    try {
+      const result = await updateUser(token, data)
+      console.log('User info successfully updated ' + result)
+      setIsEditing(false)
+    }
+    catch (err) {
+      console.alert('Error' + err)
+    }
+  }
 
 
   /* ---- CANCEL CHANGES BUTTON FUNCTION ---- */
@@ -84,34 +71,20 @@ export const ProfileView = ({ token, movies }) => {
   };
 
 
-
   /* ---- DELETE USER BUTTON FUNCTION ---- */
-  const handleDelete = (event) => {
+
+  const handleDelete = async (event) => {
     event.preventDefault();
-    const username = JSON.parse(localStorage.getItem('user')).Username;
-    fetch(`https://my-vintage-flix-06cde8de3bcb.herokuapp.com/users/${username}`, {
-      method: 'DELETE',
-      headers: { "Authorization": `Bearer ${token}` }
+    try {
+      const result = await deleteUser(token)
+      console.log('User succesfully deleted' + result);
+      localStorage.clear();
+      window.location.href = '/signup'
+    }
+    catch (err) {
+      console.log('Something went wrong' + err)
     }
 
-    ).then((response) => {
-      if (response.ok) {
-        alert('Profile deleted')
-        localStorage.clear();
-        window.location.href = '/signup'
-
-
-      }
-      else {
-        response.json().then((err) => {
-          alert('Error' + err)
-          console.log(err)
-        })
-      }
-    })
-      .catch((err) => {
-        console.log("Error" + err)
-      })
   }
 
   /* ---- REFRESH PAGE AFTER CHANGE ---- */
@@ -123,7 +96,7 @@ export const ProfileView = ({ token, movies }) => {
     setFavoriteMovies(favMovies)
     setToWatchMovies(watchMovies)
   }
-  
+
 
   /* ---- RETURN USER INFOS ---- */
   return (
@@ -135,7 +108,7 @@ export const ProfileView = ({ token, movies }) => {
               <Card.Body>
                 <Card.Title>Your Profile</Card.Title>
                 <Form
-                 className="profile-form">
+                  className="profile-form">
                   <Form.Group className="mb-3" controlId="form-username">
                     <Form.Label>Username</Form.Label>
                     <Form.Control
@@ -187,16 +160,16 @@ export const ProfileView = ({ token, movies }) => {
 
                   {!isEditing ? (
                     <>
-                    <div className="d-flex justify-content-end gap-2 mt-3">
-                      <Button type="button" onClick={() => { setIsEditing(true) }}>Change</Button>
-                      <Button onClick={handleDelete}>Delete</Button>
+                      <div className="d-flex justify-content-end gap-2 mt-3">
+                        <Button type="button" onClick={() => { setIsEditing(true) }}>Change</Button>
+                        <Button onClick={handleDelete}>Delete</Button>
                       </div>
                     </>
                   ) : (
                     <>
-                    <div className="d-flex justify-content-end gap-2 mt-3">
-                      <Button onClick={handleSave} variant='success'>Save</Button>
-                      <Button onClick={handleCancel}>Cancel</Button>
+                      <div className="d-flex justify-content-end gap-2 mt-3">
+                        <Button onClick={handleSave} variant='success'>Save</Button>
+                        <Button onClick={handleCancel}>Cancel</Button>
                       </div>
                     </>
                   )}
@@ -247,7 +220,7 @@ export const ProfileView = ({ token, movies }) => {
                       favoriteChange={refreshFavs}
                     />
                   </Col>
-                  
+
                 );
               })}
             </>

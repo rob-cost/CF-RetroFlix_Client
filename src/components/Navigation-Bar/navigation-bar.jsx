@@ -4,13 +4,10 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 
 
-
-
 export const NavScroll = ({ setUser, setToken, searchItem, setSearchItem }) => {
 
 const handleSearch = (e) => {
   e.preventDefault()
-
   const inputType = e.target.value
   setSearchItem(inputType)
 }
