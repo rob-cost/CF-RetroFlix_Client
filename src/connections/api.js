@@ -1,5 +1,5 @@
 const BASE_URL = "https://my-vintage-flix-06cde8de3bcb.herokuapp.com";
-const username = JSON.parse(localStorage.getItem('user')).Username;
+
 
 const getMovies = async(token) => {
   const response = await fetch(`${BASE_URL}/movies`, {
@@ -10,6 +10,7 @@ const getMovies = async(token) => {
 }
 
 const getFavMovies = async(movie, token) => {
+  const username = JSON.parse(localStorage.getItem('user')).Username;
   const fetchData = await fetch(`${BASE_URL}/users/${username}/favorites/${movie.id}`, {
     method: 'POST',
       headers: {
@@ -24,6 +25,7 @@ const getFavMovies = async(movie, token) => {
 
 
 const deleteFavMovies = async(movie, token) => {
+  const username = JSON.parse(localStorage.getItem('user')).Username;
   const fetchData = await fetch(`${BASE_URL}/users/${username}/favorites/${movie.id}`, {
     method: 'DELETE',
       headers: {
@@ -37,6 +39,7 @@ const deleteFavMovies = async(movie, token) => {
 }
 
 const getToWatchMovies = async(movie, token) => {
+  const username = JSON.parse(localStorage.getItem('user')).Username;
   const fetchData = await fetch(`${BASE_URL}/users/${username}/towatch/${movie.id}`, {
     method: 'POST',
       headers: {
@@ -50,6 +53,7 @@ const getToWatchMovies = async(movie, token) => {
 }
 
 const deleteToWatchMovies = async(movie, token) => {
+  const username = JSON.parse(localStorage.getItem('user')).Username;
   const fetchData = await fetch(`${BASE_URL}/users/${username}/towatch/${movie.id}`, {
     method: 'DELETE',
       headers: {
@@ -63,6 +67,7 @@ const deleteToWatchMovies = async(movie, token) => {
 }
 
 const getUser = async(token) => {
+  const username = JSON.parse(localStorage.getItem('user')).Username;
   const response = await fetch(`${BASE_URL}/users/${username}`, {
     method:'GET',
     headers: { Authorization: `Bearer ${token}` }
@@ -72,6 +77,7 @@ const getUser = async(token) => {
 }
 
 const updateUser = async(token, data) => {
+  const username = JSON.parse(localStorage.getItem('user')).Username;
   const response = await fetch(`${BASE_URL}/users/${username}`, {
       method: 'PUT',
       body: JSON.stringify(data),
@@ -86,6 +92,7 @@ const updateUser = async(token, data) => {
 
 
 const deleteUser = async(token)=> {
+  const username = JSON.parse(localStorage.getItem('user')).Username;
     const response = await fetch(`${BASE_URL}/users/${username}`, {
     method:'DELETE',
     headers: { Authorization: `Bearer ${token}` }
@@ -106,6 +113,17 @@ const loginUser = async(data) => {
     return response
 }
 
+const signupUser = async (data) => {
+  const fetchData = await fetch(`${BASE_URL}/users`, {
+    method:'POST',
+    body: JSON.stringify(data),
+    headers: {
+      "Content-Type": "application/json"
+    },
+  })
+  return fetchData
+}
+
 
 
 
@@ -120,5 +138,6 @@ export {
   updateUser,
   deleteUser,
   loginUser,
+  signupUser
 }
 

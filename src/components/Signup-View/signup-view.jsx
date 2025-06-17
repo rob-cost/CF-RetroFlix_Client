@@ -1,10 +1,9 @@
 import React from "react";
 import { useState } from "react";
 import { Form, Button, Row, Col, Container, Card } from "react-bootstrap"
-import CardHeader from "react-bootstrap/esm/CardHeader";
-import Modal from 'react-bootstrap/Modal';
 import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
+import { signupUser } from "../../connections/api";
 
 export const ModalSignup = () => {
   const [username, setUsername] = useState('');
@@ -20,9 +19,8 @@ export const ModalSignup = () => {
     });
 
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async(event) => {
     event.preventDefault();
-    console.log(event.target);
     const data = {
       Username: username,
       Password: password,
@@ -30,27 +28,21 @@ export const ModalSignup = () => {
       Birthday: birthday,
       City: city
     };
-
-    fetch('https://my-vintage-flix-06cde8de3bcb.herokuapp.com/users', {
-      method: 'POST',
-      body: JSON.stringify(data),
-      headers: {
-        "Content-Type": "application/json"
-      },
-    })
-      .then((response) => {
-        if (response.ok) {
-          notify();
-          navigate('/login');
-        } else {
-          response.text().then((err) => {
+    try {
+      const response = await signupUser(data);
+      if (response.ok) {
+        notify();
+        navigate('/login')
+      }
+      else {
+        response.text().then((err) => {
             alert(err)
           })
-        }
-      })
-      .catch((err) => {
-        console.log('Error' + err)
-      })
+      }
+    }
+    catch (err) {
+      console.alert('Error '+ err)
+    }
   };
 
   return (

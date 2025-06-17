@@ -46,7 +46,7 @@ export const MainView = () => {
       setLoading(false)
       }
       catch(err){
-        console.alert('Error ' + err)
+        console.log('Error ' + err)
       }
     }
     fetchData()
