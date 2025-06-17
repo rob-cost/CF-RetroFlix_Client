@@ -24,7 +24,32 @@ export const MainView = () => {
 
   // Fetching list of movies from the API
   useEffect(() => {
-    getMovies(setLoading, token, setMovies)
+    setLoading(true)
+    const fetchData = async() => {
+      try{
+      const result = await getMovies(token)
+      const moviesFromApi = result.map((movie)=> {
+        return {
+          id: movie.id,
+          Title: movie.Title,
+          Genre: movie.Genre,
+          Description: movie.Description,
+          Director: movie.Director,
+          Actors: movie.Actors,
+          Release: movie.Release,
+          Rating: movie.Rating,
+          Image: movie.ImagePath
+        }
+      })
+      setMovies(moviesFromApi)
+      console.log('Movies fetched correctly')
+      setLoading(false)
+      }
+      catch(err){
+        console.alert('Error ' + err)
+      }
+    }
+    fetchData()
   }, [token])
 
   // console.log(movies)

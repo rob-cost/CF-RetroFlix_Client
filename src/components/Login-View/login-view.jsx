@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { Form, Card, Container, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
+import { loginUser } from '../../connections/api';
 
 export const ModalLogin = ({ onLoggedIn }) => {
   const [username, setUsername] = useState("");
@@ -14,7 +15,7 @@ export const ModalLogin = ({ onLoggedIn }) => {
     position:'top-center'
   });
 
-  const handleSubmit = (event) => {
+/*   const handleSubmit = (event) => {
     event.preventDefault();
 
     const data = {
@@ -42,7 +43,27 @@ export const ModalLogin = ({ onLoggedIn }) => {
       .catch((e) => {
         alert('Something is wrong' + e);
       });
-  };
+  }; */
+
+  const handleSubmit = async(event) => {
+    event.preventDefault()
+    const data = {
+      Username: username,
+      Password: password
+    }
+    try {
+      const response = await loginUser(data)
+      localStorage.setItem("user", JSON.stringify(response.User));
+      localStorage.setItem("token", response.Token);
+      onLoggedIn(response.User, response.Token);
+    }
+    catch (err) {
+      notify() // it does not show
+      console.alert('Error '+ err);
+      
+    }
+    
+  }
 
   return (
     <Container>
