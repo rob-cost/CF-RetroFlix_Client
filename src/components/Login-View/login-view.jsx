@@ -3,9 +3,10 @@ import React from 'react';
 import Modal from 'react-bootstrap/Modal';
 import { useState } from 'react';
 import { Form, Card, Container, Row, Col } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, Navigate} from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import { loginUser } from '../../connections/api';
+import { GoogleLogin } from '@react-oauth/google';
 
 export const ModalLogin = ({ onLoggedIn }) => {
   const [username, setUsername] = useState("");
@@ -113,6 +114,27 @@ export const ModalLogin = ({ onLoggedIn }) => {
       </Card>
       </Col>
       </Row>
+      
+      {/* --- GOOGLE AUTHENTICATION LOGIN ---
+
+      <Row className='d-flex justify-content-center'>
+        <Col md={6} className='text-left mt-5'>
+        <div>
+          <p> Or access with your Google Account </p>
+          <GoogleLogin
+          onSuccess={(credentialResponse) => {
+            console.log(credentialResponse)
+            navigate("/movies")
+          }}
+          onError={() => {
+            console.log("Login Failed")
+          }}
+          >
+          </GoogleLogin>
+        </div>
+        </Col>
+      </Row> */}
+
     </Container>
 
   );
