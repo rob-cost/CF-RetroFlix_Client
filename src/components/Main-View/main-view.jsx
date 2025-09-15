@@ -19,159 +19,122 @@ export const MainView = () => {
   const [user, setUser] = useState(storedUser ? storedUser : null);
   const [token, setToken] = useState(storedToken ? storedToken : null);
   const [loading, setLoading] = useState(false);
-  const [searchItem, setSearchItem] = useState('');
-  
+  const [searchItem, setSearchItem] = useState("");
 
   // Fetching list of movies from the API
   useEffect(() => {
-    setLoading(true)
-    const fetchData = async() => {
-      try{
-      const result = await getMovies(token)
-      const moviesFromApi = result.map((movie)=> {
-        return {
-          id: movie.id,
-          Title: movie.Title,
-          Genre: movie.Genre,
-          Description: movie.Description,
-          Director: movie.Director,
-          Actors: movie.Actors,
-          Release: movie.Release,
-          Rating: movie.Rating,
-          Image: movie.ImagePath
-        }
-      })
-      setMovies(moviesFromApi)
-      console.log('Movies fetched correctly')
-      setLoading(false)
+    setLoading(true);
+    const fetchData = async () => {
+      try {
+        const result = await getMovies(token);
+        const moviesFromApi = result.map(movie => {
+          return {
+            id: movie.id,
+            Title: movie.Title,
+            Genre: movie.Genre,
+            Description: movie.Description,
+            Director: movie.Director,
+            Actors: movie.Actors,
+            Release: movie.Release,
+            Rating: movie.Rating,
+            Image: movie.ImagePath,
+          };
+        });
+        setMovies(moviesFromApi);
+        console.log("Movies fetched correctly");
+        setLoading(false);
+      } catch (err) {
+        console.log("Error " + err);
       }
-      catch(err){
-        console.log('Error ' + err)
-      }
-    }
-    fetchData()
-  }, [token])
+    };
+    fetchData();
+  }, [token]);
 
   // console.log(movies)
 
-
   // Search function
   const filteredMovies = searchItem
-    ? movies.filter((m) => m.Title.toLowerCase().includes(searchItem.toLowerCase()))
+    ? movies.filter(m =>
+        m.Title.toLowerCase().includes(searchItem.toLowerCase())
+      )
     : movies;
-
 
   // Login form
   return (
     <BrowserRouter>
-
       <Container>
         <Routes>
           <Route
-            path='/login'
+            path="/login"
             element={
               <>
                 {user ? (
-                  <Navigate to='/' />)
-                  :
-                  <Container className="d-flex justify-content-center align-items-center vh-100"
-                  style={{ transform: 'translateY(-10%)' }}>
-                  <ModalLogin
-                    onLoggedIn={(user, token) => {
-                      setUser(user);
-                      setToken(token);
-                    }} />
-                    </Container>
-                }
+                  <Navigate to="/" />
+                ) : (
+                  <Container
+                    className="d-flex justify-content-center align-items-center vh-100"
+                    style={{ transform: "translateY(-10%)" }}
+                  >
+                    <ModalLogin
+                      onLoggedIn={(user, token) => {
+                        setUser(user);
+                        setToken(token);
+                      }}
+                    />
+                  </Container>
+                )}
               </>
             }
           />
           <Route
-            path='/signup'
+            path="/signup"
             element={
               <>
                 {user ? (
-                  <Navigate to='/' />
+                  <Navigate to="/" />
                 ) : (
-                  <Container className="d-flex justify-content-center align-items-center vh-100"
-                  style={{ transform: 'translateY(-10%)' }}>
-                  <ModalSignup />
+                  <Container
+                    className="d-flex justify-content-center align-items-center vh-100"
+                    style={{ transform: "translateY(-10%)" }}
+                  >
+                    <ModalSignup />
                   </Container>
-                )
-                }
+                )}
               </>
             }
           />
 
           <Route
-            path='/'
+            path="/"
             element={
               <>
                 {!user ? (
-                  <Navigate to='/login' replace />
+                  <Navigate to="/login" replace />
                 ) : loading ? (
                   <Container className="d-flex justify-content-center align-items-center vh-100">
-                    <BeatLoader />
+                    <BeatLoader color="white" />
                   </Container>
-                ) : (<Navigate to='/movies' replace />)
-                }
+                ) : (
+                  <Navigate to="/movies" replace />
+                )}
               </>
             }
           />
           <Route
-            path='/movies'
+            path="/movies"
             element={
               <>
                 {!user ? (
-                  <Navigate to='/login' replace />
-                ) : loading ?
+                  <Navigate to="/login" replace />
+                ) : loading ? (
                   <Container className="d-flex justify-content-center align-items-center vh-100">
-                    <BeatLoader />
-                  </Container> :
-                  movies.length === 0 ? (
-                    <Container className="d-flex justify-content-center align-items-center vh-100">
-                      <div>Movies list is empty</div>
-                    </Container>
-                  ) : (
-                    <>
-                      <NavScroll
-                        setUser={setUser}
-                        setToken={setToken}
-                        searchItem={searchItem}
-                        setSearchItem={setSearchItem}
-                      />
-                      <Row className="mt-5 mb-5 g-3">
-                        {filteredMovies.map((movie) => (
-                          <Col className="mb-4 d-flex d-sm-block justify-content-center" xs={12} sm={6} md={4} lg={3} key={movie.id}>
-                            <MovieCard
-                              movie={movie}
-                              token={token}
-                            />
-                          </Col>
-                        ))}
-                      </Row>
-                    </>
-                  )
-                }
-              </>
-            }
-          />
-
-          <Route
-            path='movies/:title'
-            element={
-              <>
-                {!user ? (
-                  <Navigate to='/login' replace />
-                ) : loading ?
+                    <BeatLoader color="white" />
+                  </Container>
+                ) : movies.length === 0 ? (
                   <Container className="d-flex justify-content-center align-items-center vh-100">
-                    <BeatLoader />
-                  </Container> :
-                  movies.length === 0 ? (
-                    <Container className="d-flex justify-content-center align-items-center vh-100">
-                      <div>Movies list is empty</div>
-                    </Container>
-                  ) : (
+                    <div>Movies list is empty</div>
+                  </Container>
+                ) : (
                   <>
                     <NavScroll
                       setUser={setUser}
@@ -179,27 +142,63 @@ export const MainView = () => {
                       searchItem={searchItem}
                       setSearchItem={setSearchItem}
                     />
-                    <MovieView 
-                    movies={movies}
-                    token={token}
+                    <Row className="mt-5 mb-5 g-3">
+                      {filteredMovies.map(movie => (
+                        <Col
+                          className="mb-4 d-flex d-sm-block justify-content-center"
+                          xs={12}
+                          sm={6}
+                          md={4}
+                          lg={3}
+                          key={movie.id}
+                        >
+                          <MovieCard movie={movie} token={token} />
+                        </Col>
+                      ))}
+                    </Row>
+                  </>
+                )}
+              </>
+            }
+          />
+
+          <Route
+            path="movies/:title"
+            element={
+              <>
+                {!user ? (
+                  <Navigate to="/login" replace />
+                ) : loading ? (
+                  <Container className="d-flex justify-content-center align-items-center vh-100">
+                    <BeatLoader color="white" />
+                  </Container>
+                ) : movies.length === 0 ? (
+                  <Container className="d-flex justify-content-center align-items-center vh-100">
+                    <div>Movies list is empty</div>
+                  </Container>
+                ) : (
+                  <>
+                    <NavScroll
+                      setUser={setUser}
+                      setToken={setToken}
+                      searchItem={searchItem}
+                      setSearchItem={setSearchItem}
                     />
+                    <MovieView movies={movies} token={token} />
 
                     <hr />
-                    <SimilarMovies
-                      movies={movies}
-                      token={token}
-                    />
+                    <SimilarMovies movies={movies} token={token} />
                   </>
                 )}
               </>
             }
           />
           <Route
-            path='/profile'
+            path="/profile"
             element={
               <>
                 {!user ? (
-                  <Navigate to='/login' replace />
+                  <Navigate to="/login" replace />
                 ) : (
                   <>
                     <NavScroll
@@ -211,23 +210,17 @@ export const MainView = () => {
                     <ProfileView
                       token={token}
                       user={storedUser}
-                      movies={movies} />
+                      movies={movies}
+                    />
                   </>
-                )
-                }
+                )}
               </>
             }
           />
 
-          <Route
-            path="/*"
-            element={<NotFound404 />}
-          />
-
+          <Route path="/*" element={<NotFound404 />} />
         </Routes>
-
       </Container>
-    </BrowserRouter >
+    </BrowserRouter>
   );
-}
-
+};
