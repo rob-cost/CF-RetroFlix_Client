@@ -1,6 +1,6 @@
 # RetroFlix
 
-**RetroFlix** is a single-page movie web app built with **React** and styled with **Bootstrap**. It connects to a custom REST API I developed (`RetroFlix_API`) to provide users with detailed movie information, user authentication, and personalized features like favorites and a to-watch list.
+**RetroFlix** is a movie web app built with **React** and styled with **Bootstrap**. It connects to a custom REST API I developed (`RetroFlix_API`) to provide users with detailed movie information, user authentication, and personalized features like favorites and a to-watch list.
 
 You can visit the app here: [retroflixvintage.netlify.app](https://retroflixvintage.netlify.app)
 
