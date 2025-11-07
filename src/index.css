@@ -1,26 +1,38 @@
 :root {
-  --color-background: #1A1A2E;
-  --color-surface: #252745;
-  --color-text: #ECECEC;
-  --color-title: #FFF685;
-  --color-highlight: #00D1B2;
-  --color-accent: #FF4C98;
+  /* === Colors === */
+  --color-background: #5A5A5A;
+  /* medium gray background fallback */
+  --color-surface: #6E6E6E;
+  /* slightly lighter than background for cards */
+  --color-text: #FFFFFF;
+  /* white text for contrast */
+  --color-title: #FFD700;
+  /* bright yellow for titles */
+  --color-highlight: #00FFE0;
+  /* bright cyan for highlights */
+  --color-accent: #FF69B4;
+  /* pink/magenta accent for hover */
 
+  /* === Font === */
   --font-main: 'Courier New', Courier, monospace;
 
+  /* === Card sizes === */
   --card-width: 280px;
   --card-height: 250px;
   --image-height: 140px;
 }
 
+/* === Body & Background === */
 body {
-  background-color: var(--color-background);
+  background-image: url("/public/background.png");
   color: var(--color-text);
   font-family: var(--font-main);
 }
 
+/* === Navbar === */
 .navbar {
-  background-color: var(--color-background);
+  background-color: rgba(40, 40, 40, 0.85);
+  /* semi-transparent dark */
 }
 
 .navbar-brand,
@@ -36,16 +48,29 @@ body {
 
 .navbar-brand:hover,
 .nav-link:hover {
-  color: var(--color-text);
   transform: scale(1.03);
+  color: var(--color-text);
+}
+
+.navbar-brand:active,
+.nav-link:active,
+.navbar-brand:focus,
+.nav-link:focus {
+  color: var(--color-text);
+  /* same as normal */
+  transform: scale(1.03);
+  /* optional, same as hover */
+  outline: none;
+  /* remove default focus outline if desired */
 }
 
 .navbar-toggler-icon {
   filter: invert(100%) sepia(100%) saturate(10000%) hue-rotate(200deg);
 }
 
+/* === Toasts === */
 .retro-toast {
-  background-color: #1a1a1a;
+  background-color: #3a3a3a;
   color: #fff;
   font-weight: bold;
   font-size: 16px;
@@ -53,25 +78,22 @@ body {
 
 .retro-toast-body {
   padding: 10px;
-  /* optional, adjust spacing */
 }
 
 /* === Movie Card Style === */
-.card {
-  background-color: var(--color-surface);
+.card,
+.movie-card {
+  background-color: rgba(110, 110, 110, 0.9);
   border: none;
   border-radius: 10px;
-  position: relative;
   overflow: hidden;
+  position: relative;
+  color: var(--color-text);
 }
 
 .movie-card {
   width: var(--card-width);
   height: var(--card-height);
-  background-color: var(--color-surface);
-  border: none;
-  border-radius: 10px;
-  overflow: hidden;
   max-width: 100%;
   transition: transform 0.3s ease;
   display: flex;
@@ -93,17 +115,19 @@ body {
   object-fit: cover;
 }
 
-/* === Card Title and Text === */
+/* === Card Title & Text === */
 .card-title {
   color: var(--color-title);
   font-weight: bold;
   font-size: 1.25rem;
   font-style: italic;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
 }
 
 .card-text {
   color: var(--color-highlight);
   font-size: 1rem;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
 }
 
 .genre-text {
@@ -114,6 +138,7 @@ body {
   opacity: 1;
 }
 
+/* === Links === */
 a {
   text-decoration: none;
   color: inherit;
@@ -124,6 +149,7 @@ a {
   font-weight: bold;
   font-size: 2.5rem;
   font-style: italic;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
 }
 
 .movie-view-card a {
@@ -134,26 +160,6 @@ a {
 
 .movie-view-card a:hover {
   color: var(--color-accent);
-}
-
-.movie-view-card .btn {
-  color: var(--color-title);
-  background: transparent;
-  box-shadow: none;
-}
-
-.movie-view-card .btn:hover {
-  color: var(--color-highlight);
-  background: transparent;
-  border: none;
-  box-shadow: none;
-}
-
-.movie-view-card .btn:focus,
-.movie-view-card .btn:active {
-  background: transparent;
-  border: none;
-  box-shadow: none;
 }
 
 /* === Buttons === */
@@ -194,18 +200,41 @@ a {
   box-shadow: none;
 }
 
+/* === Movie View Card Buttons === */
+.movie-view-card .btn {
+  color: var(--color-title);
+  background: transparent;
+  box-shadow: none;
+}
+
+.movie-view-card .btn:hover {
+  color: var(--color-highlight);
+  background: transparent;
+  border: none;
+}
+
+.movie-view-card .btn:focus,
+.movie-view-card .btn:active {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+
 /* === Profile Form === */
 .profile.form .btn {
   align-items: right;
 }
 
+.profile-card {
+  margin-top: 80px;
+}
+
 .login-card {
-  background-color: var(--color-background);
+  background-color: transparent;
 }
 
 .form-control:disabled {
   background-color: #787878;
   color: white;
   border-color: #dee2e6;
-
 }
