@@ -1,132 +1,147 @@
 const BASE_URL = "https://my-vintage-flix-06cde8de3bcb.herokuapp.com";
 
-
-const getMovies = async(token) => {
-  const response = await fetch(`${BASE_URL}/movies`, {
-    headers: { Authorization: `Bearer ${token}` }
-  })
-  const movies = await response.json();
-  return movies 
-}
-
-const getFavMovies = async(movie, token) => {
-  const username = JSON.parse(localStorage.getItem('user')).Username;
-  const fetchData = await fetch(`${BASE_URL}/users/${username}/favorites/${movie.id}`, {
-    method: 'POST',
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json"
-      },
-  })
-  const favMovies = await fetchData.json();
-  return favMovies
-
-}
-
-
-const deleteFavMovies = async(movie, token) => {
-  const username = JSON.parse(localStorage.getItem('user')).Username;
-  const fetchData = await fetch(`${BASE_URL}/users/${username}/favorites/${movie.id}`, {
-    method: 'DELETE',
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json"
-      },
-  })
-  const favMovies = await fetchData.json();
-  return favMovies
-
-}
-
-const getToWatchMovies = async(movie, token) => {
-  const username = JSON.parse(localStorage.getItem('user')).Username;
-  const fetchData = await fetch(`${BASE_URL}/users/${username}/towatch/${movie.id}`, {
-    method: 'POST',
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json"
-      },
-  })
-  const toWatchMovies = await fetchData.json();
-  return toWatchMovies
-
-}
-
-const deleteToWatchMovies = async(movie, token) => {
-  const username = JSON.parse(localStorage.getItem('user')).Username;
-  const fetchData = await fetch(`${BASE_URL}/users/${username}/towatch/${movie.id}`, {
-    method: 'DELETE',
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json"
-      },
-  })
-  const toWatchMovies = await fetchData.json();
-  return toWatchMovies
-
-}
-
-const getUser = async(token) => {
-  const username = JSON.parse(localStorage.getItem('user')).Username;
-  const response = await fetch(`${BASE_URL}/users/${username}`, {
-    method:'GET',
-    headers: { Authorization: `Bearer ${token}` }
-  })
-  const userData = await response.json();
-  return userData
-}
-
-const updateUser = async(token, data) => {
-  const username = JSON.parse(localStorage.getItem('user')).Username;
-  const response = await fetch(`${BASE_URL}/users/${username}`, {
-      method: 'PUT',
-      body: JSON.stringify(data),
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`
-      }
-    })
-    return response
-
+const handleResponse = async response => {
+  if (!response.ok) {
+    if (response.status === 401) {
+      throw new Error("Unauthorized");
+    }
+    const text = await response.text();
+    throw new Error(text || "API Error");
   }
 
+  const text = await response.text();
+  try {
+    return JSON.parse(text);
+  } catch {
+    return text;
+  }
+};
 
-const deleteUser = async(token)=> {
-  const username = JSON.parse(localStorage.getItem('user')).Username;
-    const response = await fetch(`${BASE_URL}/users/${username}`, {
-    method:'DELETE',
-    headers: { Authorization: `Bearer ${token}` }
-  })
-  return response
-  
-}
+const getMovies = async token => {
+  const response = await fetch(`${BASE_URL}/movies`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  const movies = await response.json();
+  return movies;
+};
 
-const loginUser = async(data) => {
-    const fetchCall = await fetch(`${BASE_URL}/login`, {
-      method:'POST',
+const getFavMovies = async (movie, token) => {
+  const username = JSON.parse(localStorage.getItem("user")).Username;
+  const fetchData = await fetch(
+    `${BASE_URL}/users/${username}/favorites/${movie.id}`,
+    {
+      method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(data)
-    })
-    const response = await fetchCall.json();
-    return response
-}
+    }
+  );
+  const favMovies = await fetchData.json();
+  return favMovies;
+};
 
-const signupUser = async (data) => {
-  const fetchData = await fetch(`${BASE_URL}/users`, {
-    method:'POST',
+const deleteFavMovies = async (movie, token) => {
+  const username = JSON.parse(localStorage.getItem("user")).Username;
+  const fetchData = await fetch(
+    `${BASE_URL}/users/${username}/favorites/${movie.id}`,
+    {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  const favMovies = await fetchData.json();
+  return favMovies;
+};
+
+const getToWatchMovies = async (movie, token) => {
+  const username = JSON.parse(localStorage.getItem("user")).Username;
+  const fetchData = await fetch(
+    `${BASE_URL}/users/${username}/towatch/${movie.id}`,
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  const toWatchMovies = await fetchData.json();
+  return toWatchMovies;
+};
+
+const deleteToWatchMovies = async (movie, token) => {
+  const username = JSON.parse(localStorage.getItem("user")).Username;
+  const fetchData = await fetch(
+    `${BASE_URL}/users/${username}/towatch/${movie.id}`,
+    {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  const toWatchMovies = await fetchData.json();
+  return toWatchMovies;
+};
+
+const getUser = async token => {
+  const username = JSON.parse(localStorage.getItem("user")).Username;
+  const response = await fetch(`${BASE_URL}/users/${username}`, {
+    method: "GET",
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  const userData = await response.json();
+  return userData;
+};
+
+const updateUser = async (token, data) => {
+  const username = JSON.parse(localStorage.getItem("user")).Username;
+  const response = await fetch(`${BASE_URL}/users/${username}`, {
+    method: "PUT",
     body: JSON.stringify(data),
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
     },
-  })
-  return fetchData
-}
+  });
+  return response;
+};
 
+const deleteUser = async token => {
+  const username = JSON.parse(localStorage.getItem("user")).Username;
+  const response = await fetch(`${BASE_URL}/users/${username}`, {
+    method: "DELETE",
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return response;
+};
 
+const loginUser = async data => {
+  const fetchCall = await fetch(`${BASE_URL}/login`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+  return handleResponse(fetchCall);
+};
 
-
+const signupUser = async data => {
+  const fetchCall = await fetch(`${BASE_URL}/users`, {
+    method: "POST",
+    body: JSON.stringify(data),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  return handleResponse(fetchCall);
+};
 
 export {
   getMovies,
@@ -138,6 +153,5 @@ export {
   updateUser,
   deleteUser,
   loginUser,
-  signupUser
-}
-
+  signupUser,
+};
