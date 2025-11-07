@@ -1,22 +1,5 @@
 const BASE_URL = "https://my-vintage-flix-06cde8de3bcb.herokuapp.com";
 
-const handleResponse = async response => {
-  if (!response.ok) {
-    if (response.status === 401) {
-      throw new Error("Unauthorized");
-    }
-    const text = await response.text();
-    throw new Error(text || "API Error");
-  }
-
-  const text = await response.text();
-  try {
-    return JSON.parse(text);
-  } catch {
-    return text;
-  }
-};
-
 const getMovies = async token => {
   const response = await fetch(`${BASE_URL}/movies`, {
     headers: { Authorization: `Bearer ${token}` },
@@ -129,7 +112,8 @@ const loginUser = async data => {
     },
     body: JSON.stringify(data),
   });
-  return handleResponse(fetchCall);
+  const response = await fetchCall.json();
+  return response;
 };
 
 const signupUser = async data => {
@@ -140,7 +124,7 @@ const signupUser = async data => {
       "Content-Type": "application/json",
     },
   });
-  return handleResponse(fetchCall);
+  return fetchCall;
 };
 
 export {
